@@ -48,6 +48,11 @@ body {
   font-size: 60px;
   text-align: center;
 }
+.btn2 {
+  border-radius: 20px;
+  margin: .1vw;
+  border: 10px;
+}
 .nav-link {
   font-size: 30px;
   font-family: poppins;

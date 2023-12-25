@@ -14,5 +14,5 @@ onMounted(fetchStuff)
 </script>
 
 <template>
-  <a v-for="game in items" :href="game.path">{{ game.name }}</a>
+  <a class="btn2" v-for="game in items" :href="game.path"><img class="btn2" width="200vh" height="200vh" :src="game.img"></a>
 </template>
