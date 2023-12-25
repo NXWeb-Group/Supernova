@@ -1,0 +1,27 @@
+[
+  {
+    "game": 1,
+    "name": "Vex 3",
+    "path": "./vex3/index.html"
+  },
+  {
+    "game": 2,
+    "name": "Vex 4",
+    "path": "./vex4/index.html"
+  },
+  {
+    "game": 3,
+    "name": "Vex 5",
+    "path": "./vex5/index.html"
+  },
+  {
+    "game": 4,
+    "name": "Vex 6",
+    "path": "./vex6/index.html"
+  },
+  {
+    "game": 5,
+    "name": "Twitch tetris",
+    "path": "./tetris/index.html"
+  }
+]
