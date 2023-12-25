@@ -1,0 +1,12 @@
+[
+  {
+    "game": 1,
+    "name": "idk",
+    "path": "./game/index.html"
+  },
+  {
+    "game": 2,
+    "name": "idk2",
+    "path": "./game2/index.html"
+  }
+]

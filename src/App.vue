@@ -6,7 +6,7 @@ import apps from './components/apps.vue'
 import settings from './components/settings.vue'
 import credits from './components/credits.vue'
 import tos from './components/tos.vue'
-import games from './components/games.vue'
+import games from './components/games/games.vue'
 
 const idk = ref('home')
 
