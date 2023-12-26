@@ -9,7 +9,6 @@ const fetchStuff = async () => {
   const response = await fetch('/games.json')
   const games = await response.json()
   items.value = games
-  console.log(items)
 }
 onMounted(fetchStuff)
 
