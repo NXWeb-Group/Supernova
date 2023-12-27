@@ -14,9 +14,7 @@ onMounted(fetchStuff)
 
 function select(a){
   path = a
-  idk.value = 'game'
-  console.log(path)
-}
+  idk.value = 'game'}
 </script>
 
 <template>
