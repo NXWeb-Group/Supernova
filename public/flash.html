@@ -1,0 +1,10 @@
+<script src="./flash/ruffle/ruffle.js"></script>
+<object id="game" scrolling="no" style="border: 0px; height: 100vh; width: 100%;" data="/"></object>
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const game = urlParams.get('swf');
+    console.log(game)
+
+    var obj = document.getElementById("game");
+    obj.setAttribute('data', game);
+</script>

@@ -12,12 +12,19 @@ const fetchStuff = async () => {
 }
 onMounted(fetchStuff)
 
-function select(a){
+function select(a, b){
   path = a
-  idk.value = 'game'}
+  idk.value = b
+}
 </script>
 
 <template>
-<img v-if="idk.includes('select')" v-for="game in items" @click="select(game.path)" class="btn2" width="200vh" height="200vh" :src="game.img">
-<iframe v-if="idk.includes('game')" :src="path" scrolling="no" style="border: 0px; height: 100vh; width: 100%;"></iframe>
+<div v-if="idk.includes('select')" v-for="game in items" style="float: left; width: 45vh;">
+  <h2 style="color: white; text-align: center;">{{ game.name }}</h2>
+  <div style="display: flex; justify-content: center; align-items: center;">
+    <img @click="select(game.path, game.type)" class="btn2" width="200vh" height="200vh" :src="game.img">
+  </div>
+</div>
+<iframe v-if="idk.includes('html')" :src="path" scrolling="no" style="border: 0px; height: 100vh; width: 100%;"></iframe>
+<iframe v-if="idk.includes('flash')" :src="'./flash.html?swf=' + path" scrolling="no" style="border: 0px; height: 100vh; width: 100%;"></iframe>
 </template>
