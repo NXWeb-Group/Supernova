@@ -26,6 +26,5 @@ dist
 *.ntvs*
 *.njsproj
 *.sln
-*.sw?
 
 *.tsbuildinfo
