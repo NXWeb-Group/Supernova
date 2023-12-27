@@ -70,5 +70,17 @@
     "path": "./flash/riddletransfer2.swf",
     "img": "./pics/icon/rt2.webp",
     "type": "flash"
+  },
+  {
+    "name": "Impossible Quiz",
+    "path": "./flash/theimpossiblequiz.swf",
+    "img": "./pics/icon/iq.webp",
+    "type": "flash"
+  },
+  {
+    "name": "Impossible Quiz 2",
+    "path": "./flash/theimpossiblequiz2.swf",
+    "img": "./pics/icon/iq2.webp",
+    "type": "flash"
   }
 ]

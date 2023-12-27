@@ -20,7 +20,7 @@ function select(a, b){
 
 <template>
 <div v-if="idk.includes('select')" v-for="game in items" style="float: left; width: 45vh;">
-  <h2 style="color: white; text-align: center;">{{ game.name }}</h2>
+  <h2 style="color: white; text-align: center; font-size: 5vh;">{{ game.name }}</h2>
   <div style="display: flex; justify-content: center; align-items: center;">
     <img @click="select(game.path, game.type)" class="btn2" width="200vh" height="200vh" :src="game.img">
   </div>
