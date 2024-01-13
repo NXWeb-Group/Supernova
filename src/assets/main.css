@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
 
 body {
-  background-image: url("pics/space.jpg");
+  background-image: url("./pics/space.jpg");
   background-size: 100%;
   background-color: rgb(0,0,0);
 }
