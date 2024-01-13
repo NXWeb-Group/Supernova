@@ -20,7 +20,7 @@ function toggle(thing) {
   <home v-if="idk.includes('home')" @search="toggle('search')"></home>
   <div v-show="idk.includes('search')">
     <div class="text-center"> 
-      <img src="./assets/pics/uv.png" style="width: 20%; height: 20%;">
+      <img src="/pics/uv.png" style="width: 20%; height: 20%;">
       <form id="uv-form" class="flex-center">
         <input id="uv-search-engine" value="https://www.google.com/search?q=%s" type="hidden"/>
         <input id="uv-address" type="text" class="textbox"  placeholder="Search the web freely" />

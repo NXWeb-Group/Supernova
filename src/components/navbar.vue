@@ -8,7 +8,7 @@
         <button class="nav-item nav-link" @click="this.$emit('switch','game')">Games</button>
       </div>
       <div class="navbar-nav ml-auto">
-        <img class="nav-item nav-link" @click="this.$emit('switch','settings')" src="../assets/pics/settings.png" style=" width: 7vh; height: 7vh; cursor: pointer;">
+        <img class="nav-item nav-link" @click="this.$emit('switch','settings')" src="/pics/settings.png" style=" width: 7vh; height: 7vh; cursor: pointer;">
       </div>
     </div>
   </nav>

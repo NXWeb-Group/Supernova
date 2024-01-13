@@ -1,86 +1,128 @@
 [
   {
     "name": "Vex 3",
-    "path": "./vex3/index.html",
+    "path": "./html5/vex3/index.html",
     "img": "./pics/icon/vex3.webp",
     "type": "html"
   },
   {
     "name": "Vex 4",
-    "path": "./vex4/index.html",
+    "path": "./html5/vex4/index.html",
     "img": "./pics/icon/vex4.webp",
     "type": "html"
   },
   {
     "name": "Vex 5",
-    "path": "./vex5/index.html",
+    "path": "./html5/vex5/index.html",
     "img": "./pics/icon/vex5.webp",
     "type": "html"
   },
   {
     "name": "Vex 6",
-    "path": "./vex6/index.html",
+    "path": "./html5/vex6/index.html",
     "img": "./pics/icon/vex6.webp",
     "type": "html"
   },
   {
     "name": "Twitch tetris",
-    "path": "./tetris/index.html",
+    "path": "./html5/tetris/index.html",
     "img": "./pics/icon/tetris.webp",
     "type": "html"
   },
   {
     "name": "Riddle School",
-    "path": "./flash/riddleschool1.swf",
+    "path": "riddleschool1.swf",
     "img": "./pics/icon/rs.webp",
     "type": "flash"
   },
   {
     "name": "Riddle School 2",
-    "path": "./flash/riddleschool2.swf",
+    "path": "riddleschool2.swf",
     "img": "./pics/icon/rs2.webp",
     "type": "flash"
   },
   {
     "name": "Riddle School 3",
-    "path": "./flash/riddleschool3.swf",
+    "path": "riddleschool3.swf",
     "img": "./pics/icon/rs3.webp",
     "type": "flash"
   },
   {
     "name": "Riddle School 4",
-    "path": "./flash/riddleschool4.swf",
+    "path": "riddleschool4.swf",
     "img": "./pics/icon/rs4.webp",
     "type": "flash"
   },
   {
     "name": "Riddle School 5",
-    "path": "./flash/riddleschool5.swf",
+    "path": "riddleschool5.swf",
     "img": "./pics/icon/rs5.webp",
     "type": "flash"
   },
   {
     "name": "Riddle Transfer",
-    "path": "./flash/riddletransfer.swf",
+    "path": "riddletransfer.swf",
     "img": "./pics/icon/rt.webp",
     "type": "flash"
   },
   {
     "name": "Riddle Transfer 2",
-    "path": "./flash/riddletransfer2.swf",
+    "path": "riddletransfer2.swf",
     "img": "./pics/icon/rt2.webp",
     "type": "flash"
   },
   {
     "name": "Impossible Quiz",
-    "path": "./flash/theimpossiblequiz.swf",
+    "path": "theimpossiblequiz.swf",
     "img": "./pics/icon/iq.webp",
     "type": "flash"
   },
   {
     "name": "Impossible Quiz 2",
-    "path": "./flash/theimpossiblequiz2.swf",
+    "path": "theimpossiblequiz2.swf",
     "img": "./pics/icon/iq2.webp",
     "type": "flash"
+  },
+  {
+    "name": "Pokemon Emerald",
+    "path": "emerald.zip",
+    "img": "./pics/icon/emerald.webp",
+    "type": "emu"
+  },
+  {
+    "name": "Pokemon Red",
+    "path": "red.zip",
+    "img": "./pics/icon/red.webp",
+    "type": "emu"
+  },
+  {
+    "name": "Pokemon Fire Red",
+    "path": "firered.zip",
+    "img": "./pics/icon/firered.webp",
+    "type": "emu"
+  },
+  {
+    "name": "Super Mario Advance",
+    "path": "sma.zip",
+    "img": "./pics/icon/sma.webp",
+    "type": "emu"
+  },
+  {
+    "name": "Super Mario Advance 2",
+    "path": "sma2.zip",
+    "img": "./pics/icon/sma2.webp",
+    "type": "emu"
+  },
+  {
+    "name": "Super Mario Advance 3",
+    "path": "sma3.zip",
+    "img": "./pics/icon/sma3.webp",
+    "type": "emu"
+  },
+  {
+    "name": "Super Mario Advance 4",
+    "path": "sma4.zip",
+    "img": "./pics/icon/sma4.webp",
+    "type": "emu"
   }
 ]
