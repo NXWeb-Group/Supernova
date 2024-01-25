@@ -3,6 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "repository": {
+		"type": "git",
+		"url": "https://github.com/alive-hamster/Supernova-front.git"
+	},
   "scripts": {
     "dev": "vite",
     "build": "vite build",

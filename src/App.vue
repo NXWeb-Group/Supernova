@@ -39,7 +39,6 @@ function toggle(thing) {
   <footer>
     <button class="footer" @click="toggle('credits')">Credits</button>
     <button class="footer" @click="toggle('tos')">Terms of service</button>
-    <a class="footer" href="https://github.com/greencrowbar/Supernova.git">Source</a>
-    <p class="footer2">© 2023 NXWeb Corperation</p>
+    <a class="footer" href="https://github.com/alive-hamster/Supernova.git">Source</a>
   </footer>
 </template>
