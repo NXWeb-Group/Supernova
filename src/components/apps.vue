@@ -12,10 +12,10 @@ onMounted(fetchStuff)
 </script>
 
 <template>
-    <h1 class="font-rubik text-3xl text-center">Apps</h1>
-    <div class="flex justify-content-center">
-      <div v-for="app in items" style="width: 28vh;">
-        <a :href="app.href"><img class="image" :src="app.img" :alt="app.alt"></a>
-      </div>
+  <h1 class="font-rubik text-center text-title-blue text-7xl">Apps</h1>
+  <div class="flex flex-wrap justify-center">
+    <div v-for="app in items" class="p-2">
+      <a :href="app.href"><img class="w-60 h-60 rounded-3xl" :src="app.img" :alt="app.alt"></a>
     </div>
+  </div>
 </template>

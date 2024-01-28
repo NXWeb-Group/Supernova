@@ -17,7 +17,7 @@ function toggle(thing) {
 
 <template>
   <navb @switch="(a) => toggle(a)"></navb>
-  <home v-if="idk.includes('home')" @search="toggle('search')"></home>
+  <home v-if="idk.includes('home')" @search="toggle('search')" @credits="toggle('credits')" @tos="toggle('tos')"></home>
   <div v-show="idk.includes('search')">
     <div class="flex justify-center"> 
       <img src="/pics/uv.png" style="width: 20%; height: 20%;">
@@ -39,9 +39,4 @@ function toggle(thing) {
   <games v-if="idk.includes('game')"></games>
   <credits v-if="idk.includes('credits')"></credits>
   <tos v-if="idk.includes('tos')"></tos>
-  <footer class="absolute bottom-0 left-0 p-1 space-x-3">
-    <button class="text-xl font-poppins text-white hover:text-darker-blue" @click="toggle('credits')">Credits</button>
-    <button class="text-xl font-poppins text-white hover:text-darker-blue" @click="toggle('tos')">Terms of service</button>
-    <a class="text-xl font-poppins text-white hover:text-darker-blue" href="https://github.com/alive-hamster/Supernova.git">Source</a>
-  </footer>
 </template>

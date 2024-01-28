@@ -19,11 +19,11 @@ function select(a, b){
 </script>
 
 <template>
-<div v-if="idk.includes('select')" v-for="game in items" style="float: left; width: 30vh;">
-  <div style="display: flex; justify-content: center; align-items: center;">
-    <img @click="select(game.path, game.type)" class="btn2" width="200vh" height="200vh" :src="game.img">
+<div class="flex flex-wrap justify-center">
+  <div v-if="idk.includes('select')" v-for="game in items">
+    <img @click="select(game.path, game.type)" class="rounded-3xl m-3" width="200vh" height="200vh" :src="game.img">
+    <h2 class="text-white text-center font-poppins text-lg">{{ game.name }}</h2>
   </div>
-  <h2 style="color: white; text-align: center; font-size: 2vh;">{{ game.name }}</h2>
 </div>
 <iframe v-if="idk.includes('html')" :src="path" scrolling="no" style="border: 0px; height: 100vh; width: 100%;"></iframe>
 <iframe v-if="idk.includes('flash')" :src="'./flash.html?swf=./flash/' + path" scrolling="no" style="border: 0px; height: 100vh; width: 100%;"></iframe>
