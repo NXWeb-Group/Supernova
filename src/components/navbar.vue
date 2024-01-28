@@ -1,14 +1,14 @@
 <template>
-  <nav class="navbar navbar-expand-lg bg-dark">
-    <button class="navbar-brand title" @click="this.$emit('switch','home')">Supernova</button>
-    <div class="navbar-collapse collapse">
-      <div class="navbar-nav mr-auto">
-        <button class="nav-item nav-link" @click="this.$emit('switch','search')">Proxy</button>
-        <button class="nav-item nav-link" @click="this.$emit('switch','apps')">Apps</button>
-        <button class="nav-item nav-link" @click="this.$emit('switch','game')">Games</button>
+  <nav class="bg-nav-bg">
+    <div class="flex flex-nowrap items-center justify-between p-5">
+      <div class="space-x-5">
+        <button class="mx-2 font-rubik text-5xl text-title-blue" @click="this.$emit('switch','home')">Supernova</button>
+        <button class="font-poppins text-3xl text-white hover:text-darker-blue" @click="this.$emit('switch','search')">Proxy</button>
+        <button class="font-poppins text-3xl text-white hover:text-darker-blue" @click="this.$emit('switch','apps')">Apps</button>
+        <button class="font-poppins text-3xl text-white hover:text-darker-blue" @click="this.$emit('switch','game')">Games</button>
       </div>
-      <div class="navbar-nav ml-auto">
-        <img class="nav-item nav-link" @click="this.$emit('switch','settings')" src="/pics/settings.png" style=" width: 7vh; height: 7vh; cursor: pointer;">
+      <div>
+        <img class="size-16 cursor-pointer" @click="this.$emit('switch','settings')" src="/pics/settings.png">
       </div>
     </div>
   </nav>

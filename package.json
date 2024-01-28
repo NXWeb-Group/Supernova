@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "repository": {
-		"type": "git",
-		"url": "https://github.com/alive-hamster/Supernova-front.git"
-	},
+    "type": "git",
+    "url": "https://github.com/alive-hamster/Supernova-front.git"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -17,6 +17,9 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.5.1",
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.33",
+    "tailwindcss": "^3.4.1",
     "vite": "^5.0.5"
   }
 }
