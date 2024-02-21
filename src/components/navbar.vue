@@ -8,7 +8,7 @@
         <button class="font-poppins text-3xl text-white hover:text-darker-blue" @click="this.$emit('switch','game')">Games</button>
       </div>
       <div>
-        <img class="size-16 cursor-pointer" @click="this.$emit('switch','settings')" src="/pics/settings.png">
+        <img class="size-14 cursor-pointer" @click="this.$emit('switch','settings')" src="/pics/settings.png">
       </div>
     </div>
   </nav>

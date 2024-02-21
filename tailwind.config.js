@@ -18,6 +18,7 @@ export default {
       spacing:{
         textw: "864px",
         buttonr: "550px",
+        half: "50vh"
       }
     },
   },

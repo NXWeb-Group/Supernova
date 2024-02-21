@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen flex justify-center items-center">
+  <div class="h-half flex justify-center items-end">
     <button class="rounded-3xl m-2 bg-nav-bg font-rubik text-7xl text-center text-title-blue w-buttonr h-32 hover:text-white hover:bg-darker-blue" @click="this.$emit('search')">Search Freely</button>  
   </div>
 
