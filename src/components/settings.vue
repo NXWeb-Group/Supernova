@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-center">
-    <h1 class="text-white text-5xl font-semibold">Icon Select</h1>
+    <h1 class="text-white text-5xl font-semibold p-10">Icon Select</h1>
   </div>
   <div class="flex justify-center m-4">
     <img onclick="icon('/pics/favicon/classroom.jpg')" src="/pics/favicon/classroom.jpg">
@@ -9,7 +9,7 @@
     <img onclick="icon('/pics/favicon/google.png')" src="/pics/favicon/google.png">
   </div>
   <div class="flex justify-center">
-    <h1 class="text-white text-5xl font-semibold">Title Change</h1>
+    <h1 class="text-white text-5xl font-semibold p-12">Title Change</h1>
   </div>
   <div class="flex justify-center m-1">
     <input class="w-textw h-16 m-2 font-poppins rounded-3xl text-2xl" type="text" id="titleText">

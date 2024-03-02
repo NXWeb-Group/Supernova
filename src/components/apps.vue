@@ -12,7 +12,7 @@ onMounted(fetchStuff)
 </script>
 
 <template>
-  <h1 class="font-rubik text-center text-title-blue text-7xl">Apps</h1>
+  <h1 class="font-rubik text-center text-title-blue text-7xl p-16">Apps</h1>
   <div class="flex flex-wrap justify-center">
     <div v-for="app in items" class="p-2">
       <a :href="app.href"><img class="w-60 h-60 rounded-3xl" :src="app.img" :alt="app.alt"></a>
