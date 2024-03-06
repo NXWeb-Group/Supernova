@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { onActivated, onMounted, ref } from 'vue'
 import navb from './components/navbar.vue'
 import home from './components/home.vue'
 import apps from './components/apps.vue'
@@ -29,8 +29,8 @@ function toggle(thing) {
       </form>
     </div>
       <div class="desc left-margin">
-        <p id="uv-error"></p>
-        <pre id="uv-error-code"></pre>
+        <p class="text-white" id="uv-error"></p>
+        <pre class="text-white" id="uv-error-code"></pre>
       </div>
     
   </div>
