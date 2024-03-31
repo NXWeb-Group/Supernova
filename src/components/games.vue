@@ -7,7 +7,7 @@ var path = ''
 var rom = ''
 
 const fetchStuff = async () => {
-  const response = await fetch('./cdn/games.json')
+  const response = await fetch('./games.json')
   const games = await response.json()
   items.value = games
 }
