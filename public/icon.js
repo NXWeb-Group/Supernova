@@ -1,10 +1,8 @@
-const cookie = (name) => `; ${document.cookie}`.split(`; ${name}=`).pop().split(';').shift();
-
-if (cookie('icon') == ''){
-  document.cookie = 'icon=/pics/favicon/google.png';
+if(localStorage.getItem("icon") == null){
+  localStorage.setItem("icon", "/pics/favicon/google.png");
 }
-if (cookie('title') == ''){
-  document.cookie = 'title=Google';
+if(localStorage.getItem("title") == null){
+  localStorage.setItem("title", "Google");
 }
 
 function changeFavicon(url) {
@@ -23,15 +21,16 @@ function changeFavicon(url) {
     head.appendChild(newFavicon);
   };
 
-changeFavicon(cookie('icon'));
-document.title = cookie('title');
+changeFavicon(localStorage.getItem("icon"));
+document.title = localStorage.getItem("title");
 
 function icon(stuff) {
-    document.cookie = 'icon=' + stuff;
-    changeFavicon(cookie('icon'));
+  localStorage.setItem("icon", stuff);
+    changeFavicon(localStorage.getItem("icon"));
 };
 
 function changeTitle() {
-  document.cookie = 'title=' + document.getElementById('titleText').value;
-  document.title = cookie('title');
+  let stuff = document.getElementById('titleText').value;
+  localStorage.setItem("title", stuff);
+  document.title = localStorage.getItem("title");
 }
