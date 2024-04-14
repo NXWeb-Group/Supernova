@@ -19,6 +19,9 @@ export default {
         textw: "864px",
         buttonr: "550px",
         half: "50vh"
+      },
+      size:{
+        idk: "500px"
       }
     },
   },
