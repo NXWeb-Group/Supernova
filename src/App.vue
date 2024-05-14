@@ -13,6 +13,7 @@ import se from './components/select.vue'
 
 
 const idk = ref('home')
+var fval = ''
 var sel = ''
 const icon = useFavicon()
 const titl = ref("");
@@ -43,11 +44,16 @@ function title(idk, idk2) {
   icon.value = localStorage.getItem("icon")
 }
 title()
+function chat(){
+  fval = __uv$config.prefix + __uv$config.encodeUrl("https://elliptical.nxweb.xyz")
+  toggle("iframe")
+}
 </script>
 
 <template>
   <title>{{ titl }}</title>
-  <navb @switch="(a) => toggle(a)"></navb>
+  <navb @switch="(a) => toggle(a)" @chat="chat()"></navb>
+  <iframe style="border: 0px; height: 100vh; width: 100%;" v-if="idk.includes('iframe')" :src="fval"></iframe>
   <home v-if="idk.includes('home')" @switch="(a) => toggle(a)"></home>
   <se v-if="idk.includes('select')" @search="(a) => proxy(a)"></se>
   <div v-show="idk.includes('search')">
