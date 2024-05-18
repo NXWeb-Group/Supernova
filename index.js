@@ -10,7 +10,6 @@ const bare = createBareServer("/bare/");
 const app = express();
 
 app.use(express.static('dist'));
-app.use(express.static('public'));
 app.use("/uv/", express.static(uvPath));
 app.use("/dynamic/", express.static(dynamicPath));
 app.use(
