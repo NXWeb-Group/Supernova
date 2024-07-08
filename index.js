@@ -3,7 +3,6 @@ import express from "express";
 import proxy from 'express-http-proxy';
 import { createServer } from "node:http";
 import { uvPath } from "@titaniumnetwork-dev/ultraviolet";
-import { dynamicPath } from "@nebula-services/dynamic";
 import { hostname } from "node:os";
 
 const bare = createBareServer("/bare/");
@@ -11,7 +10,6 @@ const app = express();
 
 app.use(express.static('dist'));
 app.use("/uv/", express.static(uvPath));
-app.use("/dynamic/", express.static(dynamicPath));
 app.use(
 	'/cdn',
 	proxy(`https://3kh0-assets.silvereen.net`, {
@@ -19,9 +17,8 @@ app.use(
 	})
 );
 
-// Error for everything else
-app.get('*', function(req, res) {
-  res.send('404');
+app.get('*', function (req, res) {
+  res.redirect(`/?redirect=${req.url}`)
 });
 
 const server = createServer();
