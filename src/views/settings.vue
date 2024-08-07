@@ -23,9 +23,11 @@ function changeTransport() {
 </script>
 
 <template>
-  <div class="flex flex-wrap justify-center">
-    <h1 class="text-white text-xl">Transport:</h1>
-    <select class="w-20 h-8 rounded-lg" v-model="transport" @change="changeTransport()">
+  <div class="flex justify-center">
+    <h1 class="text-white text-5xl font-semibold p-10 pb-4">Transport:</h1>
+  </div>
+  <div class="flex justify-center">
+    <select class=" w-56 h-12 text-2xl text-center rounded-lg" v-model="transport" @change="changeTransport()">
       <option value="libcurl">Libcurl</option>
       <option value="epoxy">Epoxy</option>
       <option value="bare">Bare</option>
