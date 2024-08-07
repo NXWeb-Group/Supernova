@@ -1,15 +1,26 @@
-import { createBareServer } from "@tomphttp/bare-server-node";
 import express from "express";
 import proxy from 'express-http-proxy';
 import { createServer } from "node:http";
-import { uvPath } from "@titaniumnetwork-dev/ultraviolet";
 import { hostname } from "node:os";
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { createBareServer } from "@tomphttp/bare-server-node";
+import { uvPath } from "@titaniumnetwork-dev/ultraviolet";
+import { epoxyPath } from "@mercuryworkshop/epoxy-transport";
+import { libcurlPath } from "@mercuryworkshop/libcurl-transport";
+import { bareModulePath } from "@mercuryworkshop/bare-as-module3";
+import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
+import wisp from "wisp-server-node"
 
 const bare = createBareServer("/bare/");
 const app = express();
 
 app.use(express.static('dist'));
 app.use("/uv/", express.static(uvPath));
+app.use("/epoxy/", express.static(epoxyPath));
+app.use("/libcurl/", express.static(libcurlPath));
+app.use("/bareasmodule/", express.static(bareModulePath));
+app.use("/baremux/", express.static(baremuxPath));
 app.use(
 	'/cdn',
 	proxy(`https://3kh0-assets.silvereen.net`, {
@@ -17,8 +28,11 @@ app.use(
 	})
 );
 
-app.get('*', function (req, res) {
-  res.redirect(`/?redirect=${req.url}`)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
 });
 
 const server = createServer();
@@ -34,9 +48,9 @@ server.on("request", (req, res) => {
 server.on("upgrade", (req, socket, head) => {
   if (bare.shouldRoute(req)) {
     bare.routeUpgrade(req, socket, head);
-  } else {
-    socket.end();
-  }
+  } else if (req.url.endsWith("/wisp/")) {
+    wisp.routeRequest(req, socket, head);
+  } else socket.end();
 });
 
 let port = parseInt(process.env.PORT || "");

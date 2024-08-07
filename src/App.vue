@@ -1,10 +1,9 @@
 <script setup>
 import { onMounted } from 'vue';
-import { RouterLink, RouterView, useRouter } from 'vue-router';
+import { RouterLink, RouterView } from 'vue-router';
 import { useFavicon } from '@vueuse/core'
+import { registerSW } from './assets/register-sw.js';
 
-const router = useRouter();
-const urlParams = new URLSearchParams(window.location.search);
 const icon = useFavicon()
 
 function titlestuff() {
@@ -18,11 +17,7 @@ function titlestuff() {
   icon.value = localStorage.getItem("icon");
 }
 
-if (urlParams.get("redirect")) {
-  router.push({ path: urlParams.get("redirect") });
-}
-
-onMounted(titlestuff);
+onMounted(titlestuff(), registerSW());
 
 </script>
 

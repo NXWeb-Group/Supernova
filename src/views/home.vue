@@ -11,6 +11,6 @@ import { RouterLink } from 'vue-router';
   <footer class="fixed bottom-0 left-0 p-1 space-x-3">
     <RouterLink class="text-xl font-poppins text-white hover:text-darker-blue" to="/credits">Credits</RouterLink>
     <a class="text-xl font-poppins text-white hover:text-darker-blue"
-      href="https://github.com/alive-hamster/Supernova.git">Source</a>
+      href="https://github.com/NXWeb-Corporation/Supernova.git">Source</a>
   </footer>
 </template>
