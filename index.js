@@ -2,8 +2,8 @@ import express from "express";
 import proxy from 'express-http-proxy';
 import { createServer } from "node:http";
 import { hostname } from "node:os";
-import path from 'path';
-import { fileURLToPath } from 'url';
+import path from 'node:path';
+import url from "node:url"
 import { createBareServer } from "@tomphttp/bare-server-node";
 import { uvPath } from "@titaniumnetwork-dev/ultraviolet";
 import { epoxyPath } from "@mercuryworkshop/epoxy-transport";
@@ -11,6 +11,7 @@ import { libcurlPath } from "@mercuryworkshop/libcurl-transport";
 import { bareModulePath } from "@mercuryworkshop/bare-as-module3";
 import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
 import wisp from "wisp-server-node"
+import { createServer as createViteServer } from 'vite'
 
 const bare = createBareServer("/bare/");
 const app = express();
@@ -28,9 +29,15 @@ app.use(
 	})
 );
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+if (process.argv.includes("--dev")) {
+  const vite = await createViteServer({
+    server: { middlewareMode: 'html' }
+  })
+  app.use(vite.middlewares)
+  console.log("Vite middleware")
+}
 
+const __dirname = url.fileURLToPath(new URL("./", import.meta.url))
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
 });

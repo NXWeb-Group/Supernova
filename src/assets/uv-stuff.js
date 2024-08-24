@@ -1,6 +1,13 @@
 import { BareMuxConnection } from "@mercuryworkshop/bare-mux";
 
-const conn = new BareMuxConnection("/baremux/worker.js");
+var conn; 
+
+try {
+  conn = new BareMuxConnection("/baremux/worker.js");
+}catch(err){
+  console.error(err);
+}
+
 const wispUrl = (location.protocol === "https:" ? "wss" : "ws") + "://" + location.host + "/wisp/";
 const bareUrl = location.protocol + "//" + location.host + "/bare/";
 var transport = localStorage.getItem("transport");
@@ -11,12 +18,16 @@ if (!transport) {
 }
 
 export async function setTransport(transportsel) {
-  if (transportsel == "epoxy") {
-    await conn.setTransport("/epoxy/index.mjs", [{ wisp: wispUrl }]);
-  } else if (transportsel == "libcurl") {
-    await conn.setTransport("/libcurl/index.mjs", [{ wisp: wispUrl }]);
-  } else {    
-    await conn.setTransport("/bareasmodule/index.mjs", [ bareUrl ]);
+  try {
+    if (transportsel == "epoxy") {
+      await conn.setTransport("/epoxy/index.mjs", [{ wisp: wispUrl }]);
+    } else if (transportsel == "libcurl") {
+      await conn.setTransport("/libcurl/index.mjs", [{ wisp: wispUrl }]);
+    } else {
+      await conn.setTransport("/bareasmodule/index.mjs", [bareUrl]);
+    }
+  } catch (err) {
+    console.error(err);
   }
 }
 setTransport(transport);
