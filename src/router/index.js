@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import home from '../views/home.vue';
 import credits from '../views/credits.vue';
-import proxy from '../views/proxy.vue';
+import search from '../views/search.vue';
 import games from '../views/games.vue';
 import apps from '../views/apps.vue';
 import settings from '../views/settings.vue';
@@ -14,8 +14,8 @@ const router = createRouter({
       component: home
     },
     {
-        path: '/proxy',
-        component: proxy
+        path: '/search',
+        component: search
     },
     {
       path: '/games',

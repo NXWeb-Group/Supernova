@@ -1,32 +1,38 @@
 [
   {
     "alt": "discord",
-    "href": "/service/uv/hvtrs8%2F-dksaopd%2Ccmm-",
+    "url": "https://discord.com/",
+    "type": "uv",
     "img": "/pics/apps/discord.webp"
   },
   {
     "alt": "youtube",
-    "href": "/service/uv/hvtrs8%2F-wuw%2Cymuvu%60e%2Ccmm-",
+    "url": "https://www.youtube.com/",
+    "type": "uv",
     "img": "/pics/apps/youtube.webp"
   },
   {
     "alt": "tiktok",
-    "href": "/service/uv/hvtrs8%2F-wuw%2Ctkkvoi.aoo%2Fgxrlmrg%3F",
+    "url": "https://www.tiktok.com/",
+    "type": "uv",
     "img": "/pics/apps/tiktok.webp"
   },
   {
     "alt": "twitter",
-    "href": "/service/uv/hvtrs8%2F-tuivtgr%2Ccmm-",
+    "url": "https://twitter.com/",
+    "type": "uv",
     "img": "/pics/apps/twitter.webp"
   },
   {
     "alt": "twitch",
-    "href": "/service/uv/hvtrs8%2F-wuw%2Ctuivcj.vv-",
+    "url": "https://www.twitch.tv/",
+    "type": "uv",
     "img": "/pics/apps/twitch.webp"
   },
   {
     "alt": "WebRetro",
-    "href": "/cdn/webretro/index.html",
+    "url": "/cdn/webretro/index.html",
+    "type": "url",
     "img": "/pics/apps/webretro.webp"
   }
 ]
