@@ -16,7 +16,16 @@ import { createServer as createViteServer } from 'vite'
 const bare = createBareServer("/bare/");
 const app = express();
 
-app.use(express.static('dist'));
+if (process.argv.includes("--dev")) {
+  const vite = await createViteServer({
+    server: { middlewareMode: 'html' }
+  })
+  app.use(vite.middlewares)
+  console.log("Vite middleware")
+} else {
+  app.use(express.static('dist'));
+}
+
 app.use("/uv/", express.static(uvPath));
 app.use("/epoxy/", express.static(epoxyPath));
 app.use("/libcurl/", express.static(libcurlPath));
@@ -28,14 +37,6 @@ app.use(
 		proxyReqPathResolver: (req) => `/3kh0-assets/${req.url}`,
 	})
 );
-
-if (process.argv.includes("--dev")) {
-  const vite = await createViteServer({
-    server: { middlewareMode: 'html' }
-  })
-  app.use(vite.middlewares)
-  console.log("Vite middleware")
-}
 
 const __dirname = url.fileURLToPath(new URL("./", import.meta.url))
 app.get('*', (req, res) => {
