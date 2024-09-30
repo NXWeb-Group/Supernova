@@ -1,10 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import home from '../views/home.vue';
-import credits from '../views/credits.vue';
-import search from '../views/search.vue';
-import games from '../views/games.vue';
-import apps from '../views/apps.vue';
-import settings from '../views/settings.vue';
+import ai from '@/views/ai/ai.vue';
+import apps from '@/views/apps.vue';
+import credits from '@/views/credits.vue';
+import games from '@/views/games.vue';
+import home from '@/views/home.vue';
+import search from '@/views/search.vue';
+import settings from '@/views/settings.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +33,10 @@ const router = createRouter({
     {
         path: '/credits',
         component: credits
+    },
+    {
+      path: '/ai',
+      component: ai
     },
     {
       path: '/:404',

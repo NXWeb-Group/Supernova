@@ -12,9 +12,36 @@ import { bareModulePath } from "@mercuryworkshop/bare-as-module3";
 import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
 import wisp from "wisp-server-node"
 import { createServer as createViteServer } from 'vite'
+import 'dotenv/config'
+import session from 'express-session';
+
+import { mongoStore } from "./server/mongo.js";
+import { api } from "./server/api.js";
 
 const bare = createBareServer("/bare/");
 const app = express();
+const isHttps = process.env.HTTPS === 'true';
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(session({
+  secret: process.env.SECRET_KEY,
+  resave: false,
+  saveUninitialized: false,
+  store: mongoStore,
+  cookie: {
+    secure: isHttps,
+    maxAge: 1000 * 60 * 60 * 24 // 1 day
+  }
+}));
+
+app.use('/api/', api);
+app.use(
+	'/cdn',
+	proxy(`https://3kh0-assets.silvereen.net`, {
+		proxyReqPathResolver: (req) => `/3kh0-assets/${req.url}`,
+	})
+);
 
 if (process.argv.includes("--dev")) {
   const vite = await createViteServer({
@@ -31,12 +58,6 @@ app.use("/epoxy/", express.static(epoxyPath));
 app.use("/libcurl/", express.static(libcurlPath));
 app.use("/bareasmodule/", express.static(bareModulePath));
 app.use("/baremux/", express.static(baremuxPath));
-app.use(
-	'/cdn',
-	proxy(`https://3kh0-assets.silvereen.net`, {
-		proxyReqPathResolver: (req) => `/3kh0-assets/${req.url}`,
-	})
-);
 
 const __dirname = url.fileURLToPath(new URL("./", import.meta.url))
 app.get('*', (req, res) => {
@@ -91,6 +112,4 @@ function shutdown() {
   process.exit(0);
 }
 
-server.listen({
-  port,
-});
+server.listen(process.env.PORT);
