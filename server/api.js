@@ -38,7 +38,8 @@ export const api = async (req, res, next) => {
             next();
         }
         break;
-      default: next();
+      default:
+        next();
     }
   } catch (error) {
     console.warn(error);

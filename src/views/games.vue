@@ -28,7 +28,7 @@ function select(a, b){
 <template>
 <div class="flex flex-wrap justify-center">
   <div v-if="idk.includes('select')" v-for="game in items">
-    <img @click="select(game.file, game.root)" class="rounded-3xl m-3" width="200vh" height="200vh" :src="'/cdn/' + game.root + '/' + game.img">
+    <img @click="select(game.file, game.root)" class="rounded-3xl m-3 hover:cursor-pointer" width="200vh" height="200vh" :src="'/cdn/' + game.root + '/' + game.img">
     <h2 class="text-white text-center font-poppins text-lg">{{ game.name }}</h2>
   </div>
 </div>
