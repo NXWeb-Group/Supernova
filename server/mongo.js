@@ -18,7 +18,9 @@ if (process.argv[2] == "Docker") {
 else {
   client = new MongoClient('mongodb://127.0.0.1:27017');
 }
+if(process.env.OPENAI === 'true'){
 start(client);
+}
 
 const db = client.db(process.env.DATABASE_NAME);
 export const account = db.collection("account");

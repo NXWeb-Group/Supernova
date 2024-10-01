@@ -24,25 +24,28 @@ const isHttps = process.env.HTTPS === 'true';
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(session({
-  secret: process.env.SECRET_KEY,
-  resave: false,
-  saveUninitialized: false,
-  store: mongoStore,
-  cookie: {
-    secure: isHttps,
-    maxAge: 1000 * 60 * 60 * 24 // 1 day
-  }
-}));
+if (process.env.OPENAI === 'true') {
+  app.use(session({
+    secret: process.env.SECRET_KEY,
+    resave: false,
+    saveUninitialized: false,
+    store: mongoStore,
+    cookie: {
+      secure: isHttps,
+      maxAge: 1000 * 60 * 60 * 12 // 1/2 day
+    }
+  }));
+  app.use('/api/', api);
+} else app.use('/api/', (req, res) => {
+  res.send(false);
+});
 
-app.use('/api/', api);
 app.use(
-	'/cdn',
-	proxy(`https://3kh0-assets.silvereen.net`, {
-		proxyReqPathResolver: (req) => `/3kh0-assets/${req.url}`,
-	})
+  '/cdn',
+  proxy(`https://3kh0-assets.silvereen.net`, {
+    proxyReqPathResolver: (req) => `/3kh0-assets/${req.url}`,
+  })
 );
-
 if (process.argv.includes("--dev")) {
   const vite = await createViteServer({
     server: { middlewareMode: 'html' }
@@ -52,7 +55,6 @@ if (process.argv.includes("--dev")) {
 } else {
   app.use(express.static('dist'));
 }
-
 app.use("/uv/", express.static(uvPath));
 app.use("/epoxy/", express.static(epoxyPath));
 app.use("/libcurl/", express.static(libcurlPath));
@@ -95,8 +97,7 @@ server.on("listening", () => {
   console.log(`\thttp://localhost:${address.port}`);
   console.log(`\thttp://${hostname()}:${address.port}`);
   console.log(
-    `\thttp://${
-      address.family === "IPv6" ? `[${address.address}]` : address.address
+    `\thttp://${address.family === "IPv6" ? `[${address.address}]` : address.address
     }:${address.port}`
   );
 });

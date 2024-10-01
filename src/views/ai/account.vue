@@ -1,6 +1,7 @@
 <script setup>
 import { reactive } from 'vue';
 import axios from 'axios';
+import { store } from '@/assets/store.js';
 
 const emits = defineEmits(['successful', 'exit']);
 const stuff = reactive({
@@ -28,9 +29,11 @@ async function post() {
     username: stuff.username,
     password: stuff.password
   })
-  if (response.data.includes("successful")) {
+  if (response.data.status === "successful") {
+    store.username = response.data.username
+    store.tokens = response.data.tokens || 0
     emits('successful')
-  } else stuff.respond = response.data
+  } else stuff.respond = response.data.message
 };
 </script>
 
