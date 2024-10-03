@@ -2,6 +2,7 @@ import { reactive } from "vue";
 import axios from "axios";
 
 export const store = reactive({
+  navbar: true,
   openai: null,
   username: null,
   tokens: 0,

@@ -1,7 +1,7 @@
 <script setup>
 import { reactive } from 'vue';
 import axios from 'axios';
-import { store } from '@/assets/store.js';
+import { store } from '@/assets/store';
 
 const emits = defineEmits(['successful', 'exit']);
 const stuff = reactive({

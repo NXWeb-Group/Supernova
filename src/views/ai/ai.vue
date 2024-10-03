@@ -2,7 +2,7 @@
 import { reactive } from 'vue';
 import axios from 'axios';
 import account from '@/views/ai/account.vue'
-import { store } from '@/assets/store.js';
+import { store } from '@/assets/store';
 
 const stuff = reactive({
   component: 'home',

@@ -1,10 +1,11 @@
 <script setup>
-import { onMounted } from 'vue';
-import { RouterLink, RouterView } from 'vue-router';
+import { onMounted, watch } from 'vue';
+import { RouterLink, RouterView, useRouter } from 'vue-router';
 import { useFavicon } from '@vueuse/core'
-import { registerSW } from '@/assets/register-sw.js';
-import { store } from '@/assets/store.js';
+import { registerSW } from '@/assets/register-sw';
+import { store } from '@/assets/store';
 
+const router = useRouter();
 const icon = useFavicon()
 
 function titlestuff() {
@@ -18,12 +19,19 @@ function titlestuff() {
   icon.value = localStorage.getItem("icon");
 }
 
-onMounted(titlestuff(), registerSW());
+onMounted(() => {
+  titlestuff();
+  registerSW();
+});
+
+watch(router.currentRoute, () => {
+  store.navbar = true;
+});
 
 </script>
 
 <template>
-  <nav class="bg-nav-bg">
+  <nav class="bg-nav-bg" v-if="store.navbar === true">
     <div class="flex flex-nowrap justify-between p-5">
       <div class="space-x-5">
         <RouterLink class="mx-2 font-rubik text-5xl text-title-blue" to="/">Supernova</RouterLink>

@@ -1,6 +1,10 @@
 <script setup>
 import { reactive } from 'vue';
 import { search } from '@/assets/uv-stuff';
+import { dotSpinner } from 'ldrs'
+import { store } from '@/assets/store';
+
+dotSpinner.register()
 
 const data = reactive({
   text: "",
@@ -10,6 +14,7 @@ const data = reactive({
 function go() {
   let url = search(data.text);
   data.iframe = __uv$config.prefix + __uv$config.encodeUrl(url);
+  store.navbar = false;
 }
 
 </script>
@@ -27,5 +32,8 @@ function go() {
     </div>
 
   </div>
-  <iframe v-if="data.iframe" :src="data.iframe" class="w-full h-screen absolute"></iframe>
+  <div v-if="data.iframe" class="fixed inset-0 flex justify-center items-center">
+    <l-dot-spinner size="120" speed="1" color="white"></l-dot-spinner>
+  </div>
+  <iframe v-if="data.iframe" :src="data.iframe" class="w-full h-screen absolute z-10"></iframe>
 </template>
