@@ -1,7 +1,7 @@
 <script setup>
 import { reactive } from 'vue';
-import { search } from '@/assets/uv-stuff';
 import { dotSpinner } from 'ldrs'
+import { search } from '@/assets/uv-stuff';
 import { store } from '@/assets/store';
 
 dotSpinner.register()
