@@ -1,14 +1,18 @@
 import { BareMuxConnection } from "@mercuryworkshop/bare-mux";
 
-var conn; 
+var conn;
 
 try {
   conn = new BareMuxConnection("/baremux/worker.js");
-}catch(err){
+} catch (err) {
   console.error(err);
 }
 
-const wispUrl = (location.protocol === "https:" ? "wss" : "ws") + "://" + location.host + "/wisp/";
+const wispUrl =
+  (location.protocol === "https:" ? "wss" : "ws") +
+  "://" +
+  location.host +
+  "/wisp/";
 const bareUrl = location.protocol + "//" + location.host + "/bare/";
 var transport = localStorage.getItem("transport");
 
@@ -37,14 +41,12 @@ export function search(input) {
   try {
     // input is a valid URL:
     return new URL(input).toString();
-  } catch (err) {
-  }
+  } catch (err) {}
 
   try {
     let url = new URL(`http://${input}`);
     if (url.hostname.includes(".")) return url.toString();
-  } catch (err) {
-  }
+  } catch (err) {}
 
   return template.replace("%s", encodeURIComponent(input));
 }

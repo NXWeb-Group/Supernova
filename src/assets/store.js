@@ -6,7 +6,7 @@ export const store = reactive({
   openai: null,
   username: null,
   tokens: 0,
-})
+});
 
 async function initializeStore() {
   try {

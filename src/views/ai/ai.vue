@@ -33,26 +33,43 @@ async function post() {
   <account @successful="stuff.component = 'home';" @exit="stuff.component = 'home'"
     v-if="stuff.component === 'account'"></account>
 
-  <div></div>
-
-  <div class="w-full bg-nav-bg p-4 pt-8 m-2 rounded-lg">
-    <h2 class="text-red-600 m-2 text-center" v-if="stuff.respond">{{ stuff.respond }}</h2>
-    <form @submit.prevent="post">
-      <div class="relative">
-        <textarea required v-model="stuff.text"
-          class="rounded-lg h-24 w-full text-lg outline-blue-500 outline-8 text-start resize-none pb-8"
-          placeholder="Ask Anything" maxlength="2000"></textarea>
-        <span class="text-black absolute bottom-4 right-4">{{ stuff.text.length }} / 2000</span>
-      </div>
-      <button
-        class="rounded-xl bg-darker-blue font-rubik text-4xl text-center text-white h-12 w-full hover:bg-darkerer-blue">Submit</button>
-    </form>
-  </div>
-
-  <div class="bg-nav-bg w-80 flex justify-center">
+  <!-- <div class="bg-nav-bg w-80 flex justify-center">
     <button class="text-black bg-blue-700 font-poppins rounded-xl w-36 h-12 m-10 mt-4" v-if="!store.username"
       @click="stuff.component = 'account'">Login</button>
     <button class="text-black bg-blue-700 font-poppins rounded-xl w-36 h-12 m-10 mt-4" v-if="store.username"
       @click="logout()">Logout</button>
+  </div> -->
+
+
+  <div class="h-screen flex flex-col bg-gray-700">
+    <div class="flex-1 flex overflow-hidden">
+      <div class="flex-1 flex flex-col">
+        <div class="flex-1 overflow-y-auto p-4 space-y-4">
+          <chat></chat>
+        </div>
+
+        <div class="flex gap-2 p-4 pb-6">
+          <textarea v-model="stuff.text" placeholder="Type your message"
+            class="flex-1 px-4 py-4 rounded-lg focus:outline-none resize-none"
+            @keyup.enter="post"></textarea>
+          <button @click="post"
+            class="px-10 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+            Send
+          </button>
+        </div>
+      </div>
+
+      <div class="w-80 border-l-2 border-black bg-gray-600">
+        <div class="p-4 bg-gray-600 border-b-2 border-black">
+          <h2 class="text-2xl font-semibold text-white">Chat Rooms:</h2>
+        </div>
+        <div class="overflow-y-auto h-[calc(600px-4rem)]">
+          <div class="p-2 m-3 cursor-pointer hover:bg-gray-500 transition-colors hover:border border-black rounded-lg"
+            :class="{ 'bg-indigo-50': false }">
+            <p class="text-xl text-gray-100">test</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
