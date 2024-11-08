@@ -1,7 +1,8 @@
 import express from "express";
 import { ObjectId } from "mongodb";
-import { login, signup } from "./account.js";
 import { account } from "./mongo.js";
+import { login, signup } from "./account.js";
+import { ask } from "./ai.js";
 
 const router = express.Router();
 
@@ -53,6 +54,14 @@ router.post("/logout", (req, res, next) => {
   }
 });
 
+router.post("/ask", async (req, res, next) => {
+  try {
+    await ask(req, res);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.use((req, res) => {
   res.status(404).send({ status: "error", message: "Not Found" });
 });
@@ -62,4 +71,4 @@ router.use((error, req, res, next) => {
   res.status(500).send({ status: "error", message: "Internal Server Error" });
 });
 
-export default api = router;
+export const api = router;

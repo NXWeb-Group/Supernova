@@ -14,6 +14,7 @@ import wisp from "wisp-server-node";
 import { createServer as createViteServer } from "vite";
 import "dotenv/config";
 import session from "express-session";
+import ExpressMongoSanitize from "express-mongo-sanitize";
 
 import { mongoStore } from "./server/mongo.js";
 import { api } from "./server/api.js";
@@ -24,6 +25,7 @@ const isHttps = process.env.HTTPS === "true";
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(ExpressMongoSanitize());
 if (process.env.AI === "true") {
   app.use(
     session({
