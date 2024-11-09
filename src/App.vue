@@ -34,12 +34,15 @@ watch(router.currentRoute, () => {
   <nav class="bg-nav-bg" v-if="store.navbar === true">
     <div class="flex flex-nowrap justify-between p-5">
       <div class="space-x-5">
-        <RouterLink class="mx-2 font-rubik text-5xl text-title-blue" to="/">Supernova</RouterLink>
-        <RouterLink class="font-poppins text-3xl text-white hover:text-darker-blue" to="/search">Search</RouterLink>
-        <RouterLink class="font-poppins text-3xl text-white hover:text-darker-blue" to="/apps">Apps</RouterLink>
-        <RouterLink class="font-poppins text-3xl text-white hover:text-darker-blue" to="/games">Games</RouterLink>
-        <RouterLink v-if="store.openai == true" class="font-poppins text-3xl text-white hover:text-darker-blue"
-          to="/ai">AI</RouterLink>
+        <RouterLink class="mx-2 font-rubik text-5xl text-title-blue no-underline" to="/">Supernova</RouterLink>
+        <RouterLink class="font-poppins text-3xl text-white hover:text-darker-blue no-underline" to="/search">Search
+        </RouterLink>
+        <RouterLink class="font-poppins text-3xl text-white hover:text-darker-blue no-underline" to="/apps">Apps
+        </RouterLink>
+        <RouterLink class="font-poppins text-3xl text-white hover:text-darker-blue no-underline" to="/games">Games
+        </RouterLink>
+        <RouterLink v-if="store.openai == true"
+          class="font-poppins text-3xl text-white hover:text-darker-blue no-underline" to="/ai">AI</RouterLink>
       </div>
       <div class="flex items-center">
         <div v-if="store.username" class="flex items-center pr-8">

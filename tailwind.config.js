@@ -10,6 +10,7 @@ export default {
         'nav-bg': '#343A40',
         'title-blue': '#008cff',
         'darker-blue': '#006cc5',
+        'darkerer-blue': '#0464b3'
       },
       fontFamily: {
         poppins: "Poppins",

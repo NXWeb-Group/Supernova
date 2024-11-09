@@ -1,17 +1,20 @@
 <script setup>
 import { reactive } from 'vue';
 import axios from 'axios';
+import { dotSpinner } from 'ldrs'
 import account from '@/views/ai/components/account.vue'
 import chat from '@/views/ai/components/chat.vue'
 import room from '@/views/ai/components/room.vue'
 import { store } from '@/assets/store';
 
+dotSpinner.register()
+
 const stuff = reactive({
   component: 'home',
   text: '',
-  respond: null,
+  isSending: false,
   rooms: null,
-  chats: null,
+  chats: [],
 });
 
 async function logout() {
@@ -22,17 +25,37 @@ async function logout() {
   }
 }
 
-async function post() {
-  if (stuff.text) {
-    let response = await axios.post('/api/ask', {
-      text: stuff.text
-    })
+async function addmessage(ai, text) {
+  stuff.chats.push({ ai, text });
+}
 
-    if (response.data.status === "successful") {
-      stuff.respond = response.data.message;
-      console.log(stuff.respond)
-    } else stuff.respond = response.data.message;
+async function send() {
+  if (!stuff.isSending) {
+    stuff.isSending = stuff.text;
+    stuff.text = ""
+    try {
+      await addmessage(false, stuff.isSending)
+      let response = await axios.post('/api/ask', {
+        text: stuff.isSending
+      })
+
+      console.log(response.data)
+      await addmessage(true, response.data.message.content);
+    } catch (error) {
+      console.warn(error);
+    } finally {
+      stuff.isSending = false;
+    }
   }
+}
+
+function handleKeyupEnter(event) {
+  if (!event.shiftKey) {
+    if (stuff.text.trim()) {
+      send();
+    } else stuff.text = "";
+  }
+
 }
 </script>
 
@@ -48,17 +71,24 @@ async function post() {
   </div> -->
 
 
-  <div class="h-screen flex flex-col bg-gray-700">
+  <div class="h-full flex flex-col bg-gray-700 overflow-hidden">
     <div class="flex-1 flex overflow-hidden">
-      <div class="flex-1 flex flex-col">
-        <div class="flex-1 overflow-y-auto p-4 space-y-4">
-          <chat v-for="message in stuff.chats"></chat>
-          <chat v-if="!stuff.chats" ai="true" text="Enter A Prompt"></chat>
+      <div class="flex-1 flex flex-col overflow-x-hidden">
+        <div class="flex-1 p-4 space-y-4 overflow-y-auto">
+          <chat v-for="message in stuff.chats" :ai="message.ai" :stuff="message.text"></chat>
+          <div v-if="stuff.chats.length === 0" class="flex justify-center">
+            <div class="text-3xl font-poppins rounded-lg px-4 py-2 break-words bg-blue-600 text-white">Enter a Prompt</div>
+          </div>
+          <div v-if="stuff.isSending" class="flex justify-start">
+            <div class="bg-blue-600 rounded-lg px-12 py-2">
+              <l-dot-spinner size="30" speed="1" color="white"></l-dot-spinner>
+            </div>
+          </div>
         </div>
 
         <div class="flex gap-2 p-4 pb-6 items-center">
-          <input v-model="stuff.text" placeholder="Type your message"
-            class="flex-1 px-4 py-4 rounded-lg focus:outline-none" @keyup.enter="post"></input>
+          <textarea v-model="stuff.text" placeholder="Type your message"
+            class="flex-1 px-4 py-4 rounded-lg focus:outline-none" @keyup.enter="handleKeyupEnter"></textarea>
           <!-- <button @click="post" class="px-10 py-4 bg-title-blue text-white rounded-lg hover:bg-blue-600 transition-colors">
             Send
           </button> -->
