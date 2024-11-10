@@ -5,11 +5,10 @@ import { account } from "./mongo.js";
 const saltRounds = Number(process.env.SALT_ROUNDS);
 
 export async function getaccount(user) {
-  let query = evalidator.validate(user)
+  const query = evalidator.validate(user)
     ? { email: new RegExp(`^${user}$`, "i") }
     : { username: new RegExp(`^${user}$`, "i") };
-  let accountData = await account.findOne(query);
-  return accountData || "none";
+  return await account.findOne(query) || "none";
 }
 
 export async function login(req, res) {

@@ -3,7 +3,6 @@ import { reactive } from 'vue';
 import axios from 'axios';
 import { store } from '@/assets/store';
 
-const emits = defineEmits(['successful', 'exit']);
 const stuff = reactive({
   email: '',
   username: '',
@@ -32,13 +31,12 @@ async function post() {
   if (response.data.status === "successful") {
     store.username = response.data.username
     store.tokens = response.data.tokens || 0
-    emits('successful')
   } else stuff.respond = response.data.message
 };
 </script>
 
 <template>
-  <div @click="emits('exit')"
+  <div
     class="flex justify-center items-center fixed z-10 inset-0 bg-black bg-opacity-40 flex-col">
     <div @click.stop class="bg-nav-bg p-2 py-0 rounded-xl">
       <div>

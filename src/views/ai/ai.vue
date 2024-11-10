@@ -1,5 +1,5 @@
 <script setup>
-import { reactive } from 'vue';
+import { reactive, computed, onMounted } from 'vue';
 import axios from 'axios';
 import { dotSpinner } from 'ldrs'
 import account from '@/views/ai/components/account.vue'
@@ -10,20 +10,27 @@ import { store } from '@/assets/store';
 dotSpinner.register()
 
 const stuff = reactive({
-  component: 'home',
   text: '',
+  error: '',
   isSending: false,
   rooms: null,
   chats: [],
+  estToken: 0,
 });
 
-async function logout() {
-  let response = await axios.post('/api/logout')
-  if (response.data === "done") {
-    store.username = null;
-    store.tokens = 0;
-  }
+async function loadTokenizer() {
+  const { encodingForModel } = await import('js-tiktoken');
+  const enc = encodingForModel("gpt-4o-mini");
+
+  stuff.estToken = computed(() => {
+    const inputTokens = enc.encode(`role: system content: Markdown optional role: user content: ${stuff.text};`);
+    return inputTokens.length;
+  });
 }
+
+onMounted(async () => {
+  await loadTokenizer();
+});
 
 async function addmessage(ai, text) {
   stuff.chats.push({ ai, text });
@@ -40,7 +47,11 @@ async function send() {
       })
 
       console.log(response.data)
-      await addmessage(true, response.data.message.content);
+      if (!response.data.error) {
+        await addmessage(true, response.data.message.content);
+        store.tokens = response.data.remainingTokens
+        stuff.error = ""
+      } else stuff.error = response.data.error
     } catch (error) {
       console.warn(error);
     } finally {
@@ -49,27 +60,20 @@ async function send() {
   }
 }
 
-function handleKeyupEnter(event) {
+function enter(event) {
   if (!event.shiftKey) {
+    event.preventDefault();
     if (stuff.text.trim()) {
-      send();
-    } else stuff.text = "";
+      if (store.tokens >= stuff.estToken) {
+        send();
+      } else stuff.error = "Not Enough Tokens"
+    }
   }
-
 }
 </script>
 
 <template>
-  <account @successful="stuff.component = 'home';" @exit="stuff.component = 'home'"
-    v-if="stuff.component === 'account'"></account>
-
-  <!-- <div class="bg-nav-bg w-80 flex justify-center">
-    <button class="text-black bg-blue-700 font-poppins rounded-xl w-36 h-12 m-10 mt-4" v-if="!store.username"
-      @click="stuff.component = 'account'">Login</button>
-    <button class="text-black bg-blue-700 font-poppins rounded-xl w-36 h-12 m-10 mt-4" v-if="store.username"
-      @click="logout()">Logout</button>
-  </div> -->
-
+  <account v-if="store.username === null"></account>
 
   <div class="h-full flex flex-col bg-gray-700 overflow-hidden">
     <div class="flex-1 flex overflow-hidden">
@@ -77,7 +81,8 @@ function handleKeyupEnter(event) {
         <div class="flex-1 p-4 space-y-4 overflow-y-auto">
           <chat v-for="message in stuff.chats" :ai="message.ai" :stuff="message.text"></chat>
           <div v-if="stuff.chats.length === 0" class="flex justify-center">
-            <div class="text-3xl font-poppins rounded-lg px-4 py-2 break-words bg-blue-600 text-white">Enter a Prompt</div>
+            <div class="text-3xl font-poppins rounded-lg px-4 py-2 break-words bg-blue-600 text-white">Enter a Prompt
+            </div>
           </div>
           <div v-if="stuff.isSending" class="flex justify-start">
             <div class="bg-blue-600 rounded-lg px-12 py-2">
@@ -86,9 +91,11 @@ function handleKeyupEnter(event) {
           </div>
         </div>
 
-        <div class="flex gap-2 p-4 pb-6 items-center">
+        <div class="flex gap-2 p-4 py-6 items-center relative">
+          <span class="text-white absolute top-0 left-4">Estimated Tokens: {{ stuff.estToken }}</span>
+          <span v-if="stuff.error" class="text-red-500 absolute top-0 left-1/2">{{ stuff.error }}</span>
           <textarea v-model="stuff.text" placeholder="Type your message"
-            class="flex-1 px-4 py-4 rounded-lg focus:outline-none" @keyup.enter="handleKeyupEnter"></textarea>
+            class="flex-1 px-4 py-4 rounded-lg focus:outline-none resize-none" @keydown.enter="enter"></textarea>
           <!-- <button @click="post" class="px-10 py-4 bg-title-blue text-white rounded-lg hover:bg-blue-600 transition-colors">
             Send
           </button> -->
