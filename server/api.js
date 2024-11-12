@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get("/config", (req, res) => {
   try {
-    res.send(process.env.AI);
+    res.send({ai: true, forum: process.env.FORUM === "true"});
   } catch (error) {
     next(error);
   }

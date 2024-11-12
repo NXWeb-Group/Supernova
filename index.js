@@ -42,7 +42,7 @@ if (process.env.AI === "true") {
   app.use("/api/", api);
 } else
   app.use("/api/", (req, res) => {
-    res.send(false);
+    res.send({ai: false, forum: process.env.FORUM === "true"});
   });
 
 app.use(
@@ -65,10 +65,6 @@ app.use("/epoxy/", express.static(epoxyPath));
 app.use("/libcurl/", express.static(libcurlPath));
 app.use("/bareasmodule/", express.static(bareModulePath));
 app.use("/baremux/", express.static(baremuxPath));
-
-app.get("/forum", (req, res) => {
-  res.send(false);
-});
 
 const __dirname = url.fileURLToPath(new URL("./", import.meta.url));
 app.get("*", (req, res) => {
