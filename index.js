@@ -66,6 +66,10 @@ app.use("/libcurl/", express.static(libcurlPath));
 app.use("/bareasmodule/", express.static(bareModulePath));
 app.use("/baremux/", express.static(baremuxPath));
 
+app.get("/forum", (req, res) => {
+  res.send(false);
+});
+
 const __dirname = url.fileURLToPath(new URL("./", import.meta.url));
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "dist", "index.html"));

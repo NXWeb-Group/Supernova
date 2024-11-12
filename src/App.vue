@@ -43,13 +43,16 @@ watch(router.currentRoute, () => {
   <nav class="bg-nav-bg z-20" v-if="store.navbar === true">
     <div class="flex flex-nowrap justify-between p-5">
       <div class="space-x-5">
-        <RouterLink class="mx-2 font-rubik text-5xl text-title-blue hover:text-darker-blue no-underline" to="/">Supernova</RouterLink>
+        <RouterLink class="mx-2 font-rubik text-5xl text-title-blue hover:text-darker-blue no-underline" to="/">
+          Supernova</RouterLink>
         <RouterLink class="font-poppins text-3xl text-white hover:text-darker-blue no-underline" to="/search">Search
         </RouterLink>
         <RouterLink class="font-poppins text-3xl text-white hover:text-darker-blue no-underline" to="/apps">Apps
         </RouterLink>
         <RouterLink class="font-poppins text-3xl text-white hover:text-darker-blue no-underline" to="/games">Games
         </RouterLink>
+        <a class="font-poppins text-3xl text-white hover:text-darker-blue no-underline" v-if="store.forum"
+          href="/forum">Forum</a>
         <RouterLink v-if="store.openai == true"
           class="font-poppins text-3xl text-white hover:text-darker-blue no-underline" to="/ai">AI</RouterLink>
       </div>

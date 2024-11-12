@@ -110,7 +110,7 @@ async function getChats() {
 </script>
 
 <template>
-  <account v-if="store.username === null"></account>
+  <account v-if="store.username == null"></account>
 
   <div class="h-full flex flex-col bg-gray-700 overflow-hidden">
     <div class="flex-1 flex overflow-hidden">
