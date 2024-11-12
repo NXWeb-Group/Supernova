@@ -55,7 +55,7 @@ watch(router.currentRoute, () => {
       </div>
       <div class="flex items-center">
 
-        <div v-if="store.username" class="flex items-center pr-8 space-x-5">
+        <div v-if="store.username && router.currentRoute.value.href == '/ai'" class="flex items-center pr-8 space-x-5">
 
           <p class="font-poppins text-2xl text-white">Tokens: {{ store.tokens }}</p>
           <p class="font-poppins text-3xl text-white no-underline"> {{

@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import evalidator from "email-validator";
+import { ObjectId } from "mongodb";
 import { account } from "./mongo.js";
 
 const saltRounds = Number(process.env.SALT_ROUNDS);
@@ -8,7 +9,7 @@ export async function getaccount(user) {
   const query = evalidator.validate(user)
     ? { email: new RegExp(`^${user}$`, "i") }
     : { username: new RegExp(`^${user}$`, "i") };
-  return await account.findOne(query) || "none";
+  return (await account.findOne(query)) || "none";
 }
 
 export async function login(req, res) {
@@ -20,6 +21,7 @@ export async function login(req, res) {
       if (await bcrypt.compare(req.body.password, acc.password)) {
         req.session.username = acc.username;
         req.session.userid = acc._id;
+        req.session.valid = true;
         res.send({
           status: "successful",
           username: acc.username,
@@ -66,10 +68,12 @@ export async function signup(req, res) {
         username: req.body.username,
         tokens: 0,
         password: hash,
+        rooms: [],
       });
       const acc = await getaccount(req.body.username);
       req.session.username = acc.username;
       req.session.userid = acc._id;
+      req.session.valid = true;
       res.send({
         status: "successful",
         username: acc.username,
@@ -80,4 +84,30 @@ export async function signup(req, res) {
     console.warn(error);
     res.status(500).send({ status: "error", message: "Internal Server Error" });
   }
+}
+
+export async function getuserinfo(req, res) {
+  if (req.session.username && req.session.userid) {
+    const acc = await account.findOne({
+      _id: new ObjectId(String(req.session.userid)),
+    });
+    res.send({
+      username: req.session.username,
+      tokens: acc.tokens,
+      rooms: acc.rooms,
+    });
+  } else {
+    res.send({ username: null, tokens: 0, rooms: null });
+  }
+}
+
+export async function renameRoom(req, res) {
+  await account.updateOne(
+    {
+      _id: new ObjectId(String(req.session.userid)),
+      "rooms.roomid": new ObjectId(String(req.body.roomid)),
+    },
+    { $set: { "rooms.$.name": req.body.roomname } }
+  );
+  res.send("success")
 }

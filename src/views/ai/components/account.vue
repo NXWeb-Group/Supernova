@@ -38,7 +38,7 @@ async function post() {
 <template>
   <div
     class="flex justify-center items-center fixed z-10 inset-0 bg-black bg-opacity-40 flex-col">
-    <div @click.stop class="bg-nav-bg p-2 py-0 rounded-xl">
+    <div class="bg-nav-bg p-2 py-0 rounded-xl">
       <div>
         <h1 class="text-5xl m-6 text-darker-blue text-center font-poppins">{{ stuff.header }}</h1>
         <h2 class="text-red-600 m-2 text-center" v-if="stuff.respond">{{ stuff.respond }}</h2>

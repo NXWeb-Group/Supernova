@@ -1,8 +1,6 @@
 import express from "express";
-import { ObjectId } from "mongodb";
-import { account } from "./mongo.js";
-import { login, signup } from "./account.js";
-import { ask } from "./ai.js";
+import { login, signup, getuserinfo, renameRoom } from "./account.js";
+import { ask, getChats } from "./ai.js";
 
 const router = express.Router();
 
@@ -16,14 +14,7 @@ router.get("/config", (req, res) => {
 
 router.get("/user", async (req, res, next) => {
   try {
-    if (req.session.username && req.session.userid) {
-      const acc = await account.findOne({
-        _id: new ObjectId(String(req.session.userid)),
-      });
-      res.send({ username: req.session.username, tokens: acc.tokens });
-    } else {
-      res.send({ username: null, tokens: 0 });
-    }
+    await getuserinfo(req, res);
   } catch (error) {
     next(error);
   }
@@ -56,7 +47,29 @@ router.post("/logout", (req, res, next) => {
 
 router.post("/ask", async (req, res, next) => {
   try {
-    await ask(req, res);
+    if (req.session.valid) {
+      await ask(req, res);
+    } else res.send("invalid-session");
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/getChats", async (req, res, next) => {
+  try {
+    if (req.session.valid) {
+      await getChats(req, res);
+    } else res.send("invalid-session");
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/renameRoom", async (req, res, next) => {
+  try {
+    if (req.session.valid) {
+      await renameRoom(req, res);
+    } else res.send("invalid-session");
   } catch (error) {
     next(error);
   }

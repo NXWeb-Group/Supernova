@@ -13,26 +13,34 @@ const stuff = reactive({
   text: '',
   error: '',
   isSending: false,
-  rooms: null,
+  rooms: [],
   chats: [],
-  estToken: 0,
+  Token: 0,
 });
+
+async function getuser() {
+  const response = await axios.get("/api/user");
+  store.username = response.data.username;
+  store.tokens = response.data.tokens;
+  stuff.rooms = response.data.rooms;
+}
 
 async function loadTokenizer() {
   const { encodingForModel } = await import('js-tiktoken');
   const enc = encodingForModel("gpt-4o-mini");
 
-  stuff.estToken = computed(() => {
+  stuff.Token = computed(() => {
     const inputTokens = enc.encode(`role: system content: Markdown optional role: user content: ${stuff.text};`);
-    return inputTokens.length;
+    return inputTokens.length * 20;
   });
 }
 
 onMounted(async () => {
+  await getuser();
   await loadTokenizer();
 });
 
-async function addmessage(ai, text) {
+function addmessage(ai, text) {
   stuff.chats.push({ ai, text });
 }
 
@@ -41,17 +49,27 @@ async function send() {
     stuff.isSending = stuff.text;
     stuff.text = ""
     try {
-      await addmessage(false, stuff.isSending)
+      addmessage(false, stuff.isSending)
       let response = await axios.post('/api/ask', {
-        text: stuff.isSending
+        text: stuff.isSending,
+        roomid: store.activeroomid
       })
 
       console.log(response.data)
-      if (!response.data.error) {
-        await addmessage(true, response.data.message.content);
-        store.tokens = response.data.remainingTokens
-        stuff.error = ""
-      } else stuff.error = response.data.error
+      if (response.data !== "invalid-session") {
+        if (!response.data.error) {
+          if (response.data.roomid) {
+            stuff.rooms.push({ roomid: response.data.roomid, name: "Unnamed Room" })
+            store.activeroomid = response.data.roomid
+          }
+          addmessage(true, response.data.message);
+          store.tokens = response.data.remainingTokens
+          stuff.error = ""
+        } else stuff.error = response.data.error
+      } else {
+        store.username = null;
+        store.tokens = 0;
+      }
     } catch (error) {
       console.warn(error);
     } finally {
@@ -60,15 +78,34 @@ async function send() {
   }
 }
 
-function enter(event) {
+async function enter(event) {
   if (!event.shiftKey) {
     event.preventDefault();
     if (stuff.text.trim()) {
-      if (store.tokens >= stuff.estToken) {
-        send();
+      if (store.tokens >= stuff.Token) {
+        await send();
       } else stuff.error = "Not Enough Tokens"
     }
   }
+}
+
+async function getChats() {
+  if (store.activeroomid) {
+    const response = await axios.post('/api/getChats', {
+      roomid: store.activeroomid,
+    })
+    console.log(response.data)
+    if (response.data !== "invalid-session") {
+      stuff.chats = [];
+      for (const chat of response.data.chats) {
+        addmessage(chat.ai, chat.text);
+      }
+    } else {
+      store.username = null;
+      store.tokens = 0;
+    }
+
+  } else stuff.chats = [];
 }
 </script>
 
@@ -92,7 +129,7 @@ function enter(event) {
         </div>
 
         <div class="flex gap-2 p-4 py-6 items-center relative">
-          <span class="text-white absolute top-0 left-4">Estimated Tokens: {{ stuff.estToken }}</span>
+          <span class="text-white absolute top-0 left-4">Tokens: {{ stuff.Token }}</span>
           <span v-if="stuff.error" class="text-red-500 absolute top-0 left-1/2">{{ stuff.error }}</span>
           <textarea v-model="stuff.text" placeholder="Type your message"
             class="flex-1 px-4 py-4 rounded-lg focus:outline-none resize-none" @keydown.enter="enter"></textarea>
@@ -107,11 +144,8 @@ function enter(event) {
           <h2 class="text-2xl font-semibold text-white">Chat Rooms:</h2>
         </div>
         <div class="overflow-y-auto h-full">
-          <room v-for="room in stuff.rooms"></room>
-          <div class="p-2 m-3 cursor-pointer hover:bg-gray-500 transition-colors hover:border border-black rounded-lg"
-            :class="{ 'bg-blue-500': !store.activeroomid }">
-            <p class="text-xl text-gray-100">Empty Room</p>
-          </div>
+          <room @roomSelected="getChats" v-for="item in stuff.rooms" :name="item.name" :id="item.roomid"></room>
+          <room @roomSelected="getChats" name="Empty Room" :id="null"></room>
         </div>
       </div>
     </div>
