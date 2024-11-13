@@ -12,7 +12,10 @@ export const store = reactive({
 async function initializeStore() {
   try {
     const config = await axios.get("/api/config");
-    store.config = config.data;
+    store.config.ai = config.data;
+    const forum = await axios.get("/api/forum");
+    store.config.forum = forum.data;
+    console.log(store.config.forum)
 
   } catch (error) {
     console.error("Error initializing store:", error);

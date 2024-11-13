@@ -53,7 +53,7 @@ watch(router.currentRoute, () => {
         </RouterLink>
         <a class="font-poppins text-3xl text-white hover:text-darker-blue no-underline" v-if="store.config.forum"
           href="/forum">Forum</a>
-        <RouterLink v-if="store.config.ai == true"
+        <RouterLink v-if="store.config.ai"
           class="font-poppins text-3xl text-white hover:text-darker-blue no-underline" to="/ai">AI</RouterLink>
       </div>
       <div class="flex items-center">

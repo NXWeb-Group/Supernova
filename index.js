@@ -42,7 +42,7 @@ if (process.env.AI === "true") {
   app.use("/api/", api);
 } else
   app.use("/api/", (req, res) => {
-    res.send({ai: false, forum: process.env.FORUM === "true"});
+    res.send(false);
   });
 
 app.use(
