@@ -3,7 +3,6 @@ import axios from 'axios';
 import { onMounted, watch } from 'vue';
 import { RouterLink, RouterView, useRouter } from 'vue-router';
 import { useFavicon } from '@vueuse/core'
-import { registerSW } from '@/assets/register-sw';
 import { store } from '@/assets/store';
 
 const router = useRouter();
@@ -30,7 +29,6 @@ async function logout() {
 
 onMounted(() => {
   titlestuff();
-  registerSW();
 });
 
 watch(router.currentRoute, () => {

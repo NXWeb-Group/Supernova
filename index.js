@@ -61,6 +61,7 @@ if (process.argv.includes("--dev")) {
   app.use(express.static("dist"));
 }
 app.use("/uv/", express.static(uvPath));
+app.use("/scramjet/", express.static("scramjet"));
 app.use("/epoxy/", express.static(epoxyPath));
 app.use("/libcurl/", express.static(libcurlPath));
 app.use("/bareasmodule/", express.static(bareModulePath));

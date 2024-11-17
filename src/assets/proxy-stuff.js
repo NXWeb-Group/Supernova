@@ -1,9 +1,22 @@
 import { BareMuxConnection } from "@mercuryworkshop/bare-mux";
+import '/scramjet/scramjet.controller.js';
 
-var conn;
-
+let scramjet;
+let conn;
 try {
   conn = new BareMuxConnection("/baremux/worker.js");
+
+  scramjet = new ScramjetController({
+    prefix: "/service/scramjet/",
+    files: {
+      wasm: "/scramjet/scramjet.wasm.js",
+      worker: "/scramjet/scramjet.worker.js",
+      client: "/scramjet/scramjet.client.js",
+      shared: "/scramjet/scramjet.shared.js",
+      sync: "/scramjet/scramjet.sync.js",
+    },
+  });
+  scramjet.init("/sw.js");
 } catch (err) {
   console.error(err);
 }
@@ -13,16 +26,30 @@ const wispUrl =
   "://" +
   location.host +
   "/wisp/";
+
 const bareUrl = location.protocol + "//" + location.host + "/bare/";
-var transport = localStorage.getItem("transport");
+let proxy = localStorage.getItem("proxy");
+let transport = localStorage.getItem("transport");
+
+if (!proxy) {
+  localStorage.setItem("proxy", "uv");
+  proxy = "uv";
+}
 
 if (!transport) {
-  transport = "libcurl";
-  localStorage.setItem("transport", transport);
+  localStorage.setItem("transport", "epoxy");
+  transport = "epoxy";
+}
+
+export async function setProxy(proxysel) {
+  localStorage.setItem("proxy", proxysel);
+  proxy = proxysel;
 }
 
 export async function setTransport(transportsel) {
   try {
+    localStorage.setItem("transport", transportsel);
+    transport = transportsel;
     if (transportsel == "epoxy") {
       await conn.setTransport("/epoxy/index.mjs", [{ wisp: wispUrl }]);
     } else if (transportsel == "libcurl") {
@@ -50,3 +77,5 @@ export function search(input) {
 
   return template.replace("%s", encodeURIComponent(input));
 }
+
+export { proxy, scramjet };

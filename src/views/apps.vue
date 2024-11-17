@@ -1,8 +1,8 @@
 <script setup>
 import { reactive, onMounted } from 'vue'
 import { dotSpinner } from 'ldrs'
-import { search } from '@/assets/uv-stuff';
 import { store } from '@/assets/store';
+import { scramjet } from '@/assets/proxy-stuff';
 
 dotSpinner.register()
 
@@ -19,15 +19,18 @@ const fetchStuff = async () => {
 
 function go(url, type) {
   if (type == "uv") {
-    let fixedurl = search(url);
-    data.iframe = __uv$config.prefix + __uv$config.encodeUrl(fixedurl);
+    data.iframe = __uv$config.prefix + __uv$config.encodeUrl(url);
+  } else if (type == "scramjet") {
+    data.iframe = scramjet.encodeUrl(url);
   } else {
     data.iframe = url;
   }
   store.navbar = false;
 }
 
-onMounted(fetchStuff)
+onMounted(() => {
+  fetchStuff();
+});
 </script>
 
 <template>

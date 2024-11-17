@@ -2,6 +2,7 @@
 import { reactive, computed, onMounted } from 'vue';
 import axios from 'axios';
 import { dotSpinner } from 'ldrs'
+import { encodingForModel } from 'js-tiktoken';
 import account from '@/views/ai/components/account.vue'
 import chat from '@/views/ai/components/chat.vue'
 import room from '@/views/ai/components/room.vue'
@@ -9,13 +10,18 @@ import { store } from '@/assets/store';
 
 dotSpinner.register()
 
+const enc = encodingForModel("gpt-4o-mini");
 const stuff = reactive({
   text: '',
   error: '',
   isSending: false,
   rooms: [],
   chats: [],
-  Token: 0,
+});
+
+const Tokens = computed(() => {
+  const inputTokens = enc.encode(`role: system content: Markdown optional role: user content: ${stuff.text};`);
+  return inputTokens.length * 20;
 });
 
 async function getuser() {
@@ -25,19 +31,8 @@ async function getuser() {
   stuff.rooms = response.data.rooms;
 }
 
-async function loadTokenizer() {
-  const { encodingForModel } = await import('js-tiktoken');
-  const enc = encodingForModel("gpt-4o-mini");
-
-  stuff.Token = computed(() => {
-    const inputTokens = enc.encode(`role: system content: Markdown optional role: user content: ${stuff.text};`);
-    return inputTokens.length * 20;
-  });
-}
-
 onMounted(async () => {
   await getuser();
-  await loadTokenizer();
 });
 
 function addmessage(ai, text) {
@@ -82,7 +77,7 @@ async function enter(event) {
   if (!event.shiftKey) {
     event.preventDefault();
     if (stuff.text.trim()) {
-      if (store.tokens >= stuff.Token) {
+      if (store.tokens >= Tokens.value) {
         await send();
       } else stuff.error = "Not Enough Tokens"
     }
@@ -129,7 +124,7 @@ async function getChats() {
         </div>
 
         <div class="flex gap-2 p-4 py-6 items-center relative">
-          <span class="text-white absolute top-0 left-4">Tokens: {{ stuff.Token }}</span>
+          <span class="text-white absolute top-0 left-4">Tokens: {{ Tokens }}</span>
           <span v-if="stuff.error" class="text-red-500 absolute top-0 left-1/2">{{ stuff.error }}</span>
           <textarea v-model="stuff.text" placeholder="Type your message"
             class="flex-1 px-4 py-4 rounded-lg focus:outline-none resize-none" @keydown.enter="enter"></textarea>

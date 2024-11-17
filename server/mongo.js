@@ -11,21 +11,24 @@ async function start(client) {
 }
 
 let client = null;
+let account;
+let mongoStore;
 //database
-if (process.argv[2] == "Docker") {
-  client = new MongoClient("mongodb://mongodb:27017");
-} else {
-  client = new MongoClient("mongodb://127.0.0.1:27017");
-}
-
 if (process.env.AI === "true") {
-  start(client);
-}
+  if (process.argv[2] == "Docker") {
+    client = new MongoClient("mongodb://mongodb:27017");
+  } else {
+    client = new MongoClient("mongodb://127.0.0.1:27017");
+  }
 
-const db = client.db(process.env.DATABASE_NAME);
-export const account = db.collection("account");
-export const mongoStore = MongoStore.create({
-  client: client,
-  dbName: process.env.DATABASE_NAME,
-  collectionName: "sessions",
-});
+  start(client);
+
+  const db = client.db(process.env.DATABASE_NAME);
+  account = db.collection("account");
+  mongoStore = MongoStore.create({
+    client: client,
+    dbName: process.env.DATABASE_NAME,
+    collectionName: "sessions",
+  });
+}
+export { account, mongoStore };

@@ -1,8 +1,8 @@
 <script setup>
 import { reactive } from 'vue';
 import { dotSpinner } from 'ldrs'
-import { search } from '@/assets/uv-stuff';
 import { store } from '@/assets/store';
+import { search, proxy, scramjet } from '@/assets/proxy-stuff';
 
 dotSpinner.register()
 
@@ -13,15 +13,24 @@ const data = reactive({
 
 function go() {
   let url = search(data.text);
-  data.iframe = __uv$config.prefix + __uv$config.encodeUrl(url);
+  if (proxy === "uv") {
+    data.iframe = __uv$config.prefix + __uv$config.encodeUrl(url);
+  } else if (proxy === "scramjet") {
+    data.iframe = scramjet.encodeUrl(url);
+  }
+  else {
+    data.iframe = url;
+  }
   store.navbar = false;
 }
 
 </script>
 <template>
   <div v-if="!data.iframe">
-    <div class="flex justify-center">
-      <img src="../assets/pics/uv.png" alt="uv logo" style="width: 20%; height: 20%;">
+    <div class="flex justify-center p-5">
+      <img v-if="proxy === 'uv'" src="../assets/pics/uv.png" alt="uv logo" style="width: 20%; height: 20%;">
+      <img v-if="proxy === 'scramjet'" src="../assets/pics/scramjet.png" alt="scramjet logo"
+        style="width: 30%; height: 30%;">
     </div>
     <div class="flex justify-center">
       <form @submit.prevent="go">
@@ -35,5 +44,5 @@ function go() {
   <div v-if="data.iframe" class="fixed inset-0 flex justify-center items-center">
     <l-dot-spinner size="120" speed="1" color="white"></l-dot-spinner>
   </div>
-  <iframe v-if="data.iframe" :src="data.iframe" class="w-full h-screen absolute z-10"></iframe>
+  <iframe v-if="data.iframe" :src="data.iframe" class="w-screen h-screen absolute z-10"></iframe>
 </template>
