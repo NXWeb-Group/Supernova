@@ -6,7 +6,11 @@ import { useFavicon } from '@vueuse/core'
 import { scramjet } from "@/assets/proxy-stuff"
 import { store } from '@/assets/store';
 
-scramjet.init("/sw.js");
+try {
+  scramjet.init("/sw.js");
+} catch (e) {
+  console.warn(e);
+}
 
 const router = useRouter();
 const icon = useFavicon()
@@ -54,8 +58,8 @@ watch(router.currentRoute, () => {
         </RouterLink>
         <a class="font-poppins text-3xl text-white hover:text-darker-blue no-underline" v-if="store.config.forum"
           href="/forum">Forum</a>
-        <RouterLink v-if="store.config.ai"
-          class="font-poppins text-3xl text-white hover:text-darker-blue no-underline" to="/ai">AI</RouterLink>
+        <RouterLink v-if="store.config.ai" class="font-poppins text-3xl text-white hover:text-darker-blue no-underline"
+          to="/ai">AI</RouterLink>
       </div>
       <div class="flex items-center">
 
