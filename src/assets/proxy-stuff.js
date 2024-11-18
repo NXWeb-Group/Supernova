@@ -16,7 +16,6 @@ try {
       sync: "/scramjet/scramjet.sync.js",
     },
   });
-  scramjet.init("/sw.js");
 } catch (err) {
   console.error(err);
 }

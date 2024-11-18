@@ -3,7 +3,10 @@ import axios from 'axios';
 import { onMounted, watch } from 'vue';
 import { RouterLink, RouterView, useRouter } from 'vue-router';
 import { useFavicon } from '@vueuse/core'
+import { scramjet } from "@/assets/proxy-stuff"
 import { store } from '@/assets/store';
+
+scramjet.init("/sw.js");
 
 const router = useRouter();
 const icon = useFavicon()
