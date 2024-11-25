@@ -41,7 +41,7 @@ function select(a, b) {
   <div v-if="!idk.includes('select')" class="fixed inset-0 flex justify-center items-center">
     <l-dot-spinner size="120" speed="1" color="white"></l-dot-spinner>
   </div>
-  <iframe v-if="idk.includes('html')" :src="path" scrolling="no" class="w-full h-screen absolute z-10"></iframe>
-  <iframe v-if="idk.includes('emu')" :src="'./cdn/webretro/index.html?core=autodetect&rom=' + rom" scrolling="no"
+  <iframe v-if="idk.includes('html')" :src="path" class="w-full h-screen absolute z-10"></iframe>
+  <iframe v-if="idk.includes('emu')" :src="'./cdn/webretro/index.html?core=autodetect&rom=' + rom"
     class="w-full h-screen absolute z-10"></iframe>
 </template>
