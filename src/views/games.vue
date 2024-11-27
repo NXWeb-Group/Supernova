@@ -15,7 +15,7 @@ onMounted(fetchStuff)
 
 function select(file, root) {
   const path = "./cdn/" + root + "/" + file
-  if (b === "webretro") {
+  if (root === "webretro") {
     store.iframe = '/cdn/webretro/index.html?core=autodetect&rom=' + file
   }
   else {
