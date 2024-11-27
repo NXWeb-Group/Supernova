@@ -60,8 +60,7 @@ function changeTransport() {
   </div>
   <div class="flex flex-col justify-center items-center">
     <h1 class="text-white text-5xl font-semibold pt-12">Custom Icon</h1>
-    <input class="w-textw h-16 m-3 font-poppins rounded-3xl text-2xl" type="input" v-model="iconurl"
-      @input="stuff2(iconurl)">
+    <input class="w-textw h-16 m-3 font-poppins rounded-3xl text-2xl" type="input" v-model="iconurl" @keyup.enter="stuff2(iconurl)">
   </div>
   <div class="flex flex-col justify-center items-center mb-36">
     <h1 class="text-white text-5xl font-semibold pt-12">Title Change</h1>

@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 const home = () => import("@/views/home.vue");
+const iframe = () => import("@/views/iframe.vue");
 const search = () => import("@/views/search.vue");
 const games = () => import("@/views/games.vue");
 const apps = () => import("@/views/apps.vue");
@@ -14,6 +15,10 @@ const router = createRouter({
     {
       path: "/",
       component: home,
+    },
+    {
+      path: "/iframe",
+      component: iframe,
     },
     {
       path: "/search",
