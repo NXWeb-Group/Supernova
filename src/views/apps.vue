@@ -1,19 +1,17 @@
 <script setup>
-import { reactive, onMounted } from 'vue'
+import axios from 'axios';
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router';
 import { store } from '@/assets/store';
 import { scramjet } from '@/assets/proxy-stuff';
 
 const router = useRouter();
 
-const data = reactive({
-  items: [],
-});
+const items = ref([]);
 
-const fetchStuff = async () => {
-  const response = await fetch('/apps.json')
-  const apps = await response.json()
-  data.items = apps
+async function fetchStuff() {
+  const response = await axios.get('/apps.json')
+  items.value = response.data
 }
 
 function go(url, type) {
@@ -36,7 +34,7 @@ onMounted(() => {
   <div>
     <h1 class="font-rubik text-center text-title-blue text-7xl p-16">Apps</h1>
     <div class="flex flex-wrap justify-center">
-      <div v-for="app in data.items" class="p-2">
+      <div v-for="app in items" class="p-2">
         <button @click="go(app.url, app.type)"><img class="w-60 h-60 rounded-3xl" :src="app.img"
             :alt="app.alt"></button>
       </div>

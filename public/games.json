@@ -1758,7 +1758,7 @@
       "root": "webretro"
     },
     {
-      "name": "Super Mario Bros. (the original!)",
+      "name": "Super Mario Bros",
       "file": "mario.nes",
       "img": "thumb/mario.jpg",
       "root": "webretro"
@@ -1788,7 +1788,7 @@
       "root": "webretro"
     },
     {
-      "name": "Sonic \u003Ci\u003E[gameboy]\u003C/i\u003E Advance",
+      "name": "Sonic gameboy Advance",
       "file": "sonic-advance.gba",
       "img": "thumb/sonic-advance.jpg",
       "root": "webretro"
@@ -1812,7 +1812,7 @@
       "root": "webretro"
     },
     {
-      "name": "Mother 3 (no crying until the end)",
+      "name": "Mother 3",
       "file": "mother3.zip",
       "img": "thumb/mother3.png",
       "root": "webretro"

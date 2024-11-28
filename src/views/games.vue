@@ -1,4 +1,5 @@
 <script setup>
+import axios from 'axios';
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router';
 import { store } from '@/assets/store';
@@ -6,11 +7,11 @@ import { store } from '@/assets/store';
 const router = useRouter();
 const items = ref([]);
 
-const fetchStuff = async () => {
-  const response = await fetch('./games.json')
-  const games = await response.json()
-  items.value = games
+async function fetchStuff() {
+  const response = await axios.get('/games.json')
+  items.value = response.data
 }
+
 onMounted(fetchStuff)
 
 function select(file, root) {
