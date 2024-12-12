@@ -47,8 +47,8 @@ if (process.env.AI === "true") {
 
 app.use(
   "/cdn",
-  proxy(`https://3kh0-assets.silvereen.net`, {
-    proxyReqPathResolver: (req) => `/3kh0-assets/${req.url}`,
+  proxy(`https://3kh0-assets.nxweb.xyz`, {
+    proxyReqPathResolver: (req) => req.url,
   })
 );
 if (process.argv.includes("--dev")) {

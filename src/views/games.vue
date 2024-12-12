@@ -8,7 +8,7 @@ const router = useRouter();
 const items = ref([]);
 
 async function fetchStuff() {
-  const response = await axios.get('/games.json')
+  const response = await axios.get('/cdn/games.json')
   items.value = response.data
 }
 

@@ -10,7 +10,7 @@ const router = useRouter();
 const items = ref([]);
 
 async function fetchStuff() {
-  const response = await axios.get('/apps.json')
+  const response = await axios.get('/cdn/apps.json')
   items.value = response.data
 }
 
