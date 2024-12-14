@@ -1,6 +1,6 @@
 # Supernova
 
-Supernova is an Ultraviolet based proxy
+Supernova is an Ultraviolet and Scramjet based proxy
 
 ## Install
 
