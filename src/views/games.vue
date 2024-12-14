@@ -19,7 +19,7 @@ const items = reactive({
 
 async function fetchStuff() {
   const response = await axios.get('/cdn/games.json')
-  items.all = response.data
+  items.all = response.data.sort((a, b) => a.name.localeCompare(b.name));
   items.itemsperpage = 20;
   const param = route.query;
   if (param.search) {
