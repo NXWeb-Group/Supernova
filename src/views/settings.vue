@@ -1,9 +1,7 @@
 <script setup>
 import { ref } from 'vue';
-import { useFavicon } from '@vueuse/core';
-import { setTransport, setProxy } from '@/assets/proxy-stuff';
+import { setTransport, setProxy, setFavicon } from '@/assets/stuff';
 
-const icon = useFavicon();
 const iconurl = ref(localStorage.getItem('icon'));;
 const text = ref(localStorage.getItem("title"));
 const proxy = ref(localStorage.getItem("proxy"));
@@ -15,7 +13,7 @@ function stuff() {
 }
 function stuff2(idk) {
   localStorage.setItem('icon', idk);
-  icon.value = idk;
+  setFavicon(idk);
   iconurl.value = idk;
 }
 

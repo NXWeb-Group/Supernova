@@ -3,7 +3,7 @@ import axios from 'axios';
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router';
 import { store } from '@/assets/store';
-import { scramjet } from '@/assets/proxy-stuff';
+import { scramjet } from '@/assets/stuff';
 
 const router = useRouter();
 

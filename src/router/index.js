@@ -1,20 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
-
-const home = () => import("@/views/home.vue");
-const iframe = () => import("@/views/iframe.vue");
-const search = () => import("@/views/search.vue");
-const games = () => import("@/views/games.vue");
-const apps = () => import("@/views/apps.vue");
-const settings = () => import("@/views/settings.vue");
-const credits = () => import("@/views/credits.vue");
-const ai = () => import("@/views/ai/ai.vue");
+import iframe from "@/views/iframe.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: "/",
-      component: home,
+      component: () => import("@/views/home.vue"),
     },
     {
       path: "/iframe",
@@ -22,27 +14,27 @@ const router = createRouter({
     },
     {
       path: "/search",
-      component: search,
+      component: () => import("@/views/search.vue"),
     },
     {
       path: "/games",
-      component: games,
+      component: () => import("@/views/games.vue"),
     },
     {
       path: "/apps",
-      component: apps,
+      component: () => import("@/views/apps.vue"),
     },
     {
       path: "/settings",
-      component: settings,
+      component: () => import("@/views/settings.vue"),
     },
     {
       path: "/credits",
-      component: credits,
+      component: () => import("@/views/credits.vue"),
     },
     {
       path: "/ai",
-      component: ai,
+      component: () => import("@/views/ai/ai.vue"),
     },
     {
       path: "/:404",

@@ -2,7 +2,7 @@
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { store } from '@/assets/store';
-import { search, proxy, scramjet } from '@/assets/proxy-stuff';
+import { search, proxy, scramjet } from '@/assets/stuff';
 
 const router = useRouter();
 

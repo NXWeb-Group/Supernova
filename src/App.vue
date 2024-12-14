@@ -2,8 +2,7 @@
 import axios from 'axios';
 import { onMounted, watch } from 'vue';
 import { RouterLink, RouterView, useRouter } from 'vue-router';
-import { useFavicon } from '@vueuse/core'
-import { scramjet } from "@/assets/proxy-stuff"
+import { scramjet, setFavicon } from "@/assets/stuff"
 import { store } from '@/assets/store';
 
 try {
@@ -13,7 +12,8 @@ try {
 }
 
 const router = useRouter();
-const icon = useFavicon()
+
+
 
 function titlestuff() {
   if (localStorage.getItem("icon") == null) {
@@ -23,7 +23,7 @@ function titlestuff() {
     localStorage.setItem("title", "Google");
   }
   document.title = localStorage.getItem("title");
-  icon.value = localStorage.getItem("icon");
+  setFavicon(localStorage.getItem("icon"));
 }
 
 async function logout() {
