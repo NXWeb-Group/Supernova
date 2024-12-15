@@ -1,6 +1,6 @@
 <script setup>
 import axios from 'axios';
-import { onMounted, watch, nextTick } from 'vue';
+import { onMounted, watch } from 'vue';
 import { RouterLink, RouterView, useRouter } from 'vue-router';
 import { scramjet, setFavicon } from "@/assets/stuff"
 import { store } from '@/assets/store';
@@ -13,7 +13,7 @@ try {
 
 const router = useRouter();
 
-function trackPageView(path, title) {
+function trackPageView(path, event, title) {
   // Ensure zaraz is loaded and ready
   if (typeof window.zaraz === 'undefined') {
     console.warn('Zaraz not initialized');
@@ -21,11 +21,9 @@ function trackPageView(path, title) {
   }
 
   try {
-    zaraz('pageview', {
+    window.zaraz.track(event, {
       path: path,
       title: title || document.title,
-      location: window.location.href,
-      timestamp: new Date().toISOString()
     });
   } catch (e) {
     console.error('Zaraz tracking failed:', e);
@@ -53,10 +51,11 @@ async function logout() {
 
 onMounted(() => {
   titlestuff();
+  trackPageView(router.currentRoute.value.path, "first");
 });
 
 router.afterEach((to) => {
-  trackPageView(to.path);
+  trackPageView(to.path, "Pageview");
 });
 
 watch(router.currentRoute, () => {
