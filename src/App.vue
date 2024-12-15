@@ -5,15 +5,17 @@ import { RouterLink, RouterView, useRouter } from 'vue-router';
 import { scramjet, setFavicon } from "@/assets/stuff"
 import { store } from '@/assets/store';
 
-try {
-  scramjet.init("/sw.js");
-} catch (e) {
-  console.warn(e);
+function startSW() {
+  try {
+    scramjet.init("/sw.js");
+  } catch (e) {
+    console.warn(e);
+  }
 }
 
 const router = useRouter();
 
-function trackPageView(path, event, title) {
+function trackZaraz(path, event, title) {
   // Ensure zaraz is loaded and ready
   if (typeof window.zaraz === 'undefined') {
     console.warn('Zaraz not initialized');
@@ -50,12 +52,13 @@ async function logout() {
 }
 
 onMounted(() => {
+  startSW();
   titlestuff();
-  trackPageView(router.currentRoute.value.path, "first");
+  trackZaraz(router.currentRoute.value.path, "first");
 });
 
 router.afterEach((to) => {
-  trackPageView(to.path, "Pageview");
+  trackZaraz(to.path, "Pageview");
 });
 
 watch(router.currentRoute, () => {
