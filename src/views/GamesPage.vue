@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import axios from 'axios';
 import { reactive, onMounted, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router';
@@ -7,9 +7,16 @@ import { store } from '@/assets/store';
 const router = useRouter();
 const route = useRoute();
 
+interface Game {
+  name: string;
+  file: string;
+  root: string;
+  img: string;
+}
+
 const items = reactive({
-  all: [],
-  page: [],
+  all: [] as Game[],
+  page: [] as Game[],
   pagenum: 1,
   itemsperpage: 0,
   search: "",
@@ -19,13 +26,13 @@ const items = reactive({
 
 async function fetchStuff() {
   const response = await axios.get('/cdn/games.json')
-  items.all = response.data.sort((a, b) => a.name.localeCompare(b.name));
+  items.all = response.data.sort((a: { name: string }, b: { name: string }) => a.name.localeCompare(b.name));
   items.itemsperpage = 20;
   const param = route.query;
   if (param.search) {
-    items.search = param.search;
+    items.search = param.search as string;
   }
-  if (parseInt(param.page)) {
+  if (param.page && typeof param.page === 'string' && parseInt(param.page)) {
     page(parseInt(param.page));
   } else page(1);
 }
@@ -35,7 +42,7 @@ const totalPages = computed(() => {
   return Math.ceil(items.all.length / items.itemsperpage);
 })
 
-function page(num) {
+function page(num: number) {
   if (num > totalPages.value) num = totalPages.value;
   if (num < 1) num = 1;
   items.pagenum = num;
@@ -61,7 +68,7 @@ const dropdown = computed(() => {
   return filteredResults.value.length && (items.inputFocused || items.dropdown);
 });
 
-function select(file, root) {
+function select(file: string, root: string) {
   const path = "./cdn/" + root + "/" + file
   if (root === "webretro") {
     store.iframe = '/cdn/webretro/index.html?core=autodetect&rom=' + file
@@ -79,17 +86,16 @@ onMounted(fetchStuff)
 <template>
   <div class="flex justify-center m-6">
     <div class="relative w-96 sm:w-textw">
-      <input v-model="items.search" @keyup.enter="page(0)" @focus="items.inputFocused = true"
-        @blur="items.inputFocused = false"
-        class="w-full rounded-3xl outline-none transition-all h-12 text-center text-2xl"
+      <input v-model="items.search" class="w-full rounded-3xl outline-none transition-all h-12 text-center text-2xl"
         :class="{ 'rounded-t-md rounded-b-none': dropdown, 'focus:rounded-md': !dropdown }" placeholder="Search Games"
-        type="text">
+        type="text" @keyup.enter="page(0)" @focus="items.inputFocused = true" @blur="items.inputFocused = false">
       <Transition name="slide">
-        <div v-if="dropdown" @mouseenter="items.dropdown = true" @mouseleave="items.dropdown = false"
-          class="absolute top-full left-0 w-full bg-white rounded-b-lg z-10 max-h-96 overflow-x-clip overflow-y-scroll shadow-lg">
+        <div v-if="dropdown"
+          class="absolute top-full left-0 w-full bg-white rounded-b-lg z-10 max-h-96 overflow-x-clip overflow-y-scroll shadow-lg"
+          @mouseenter="items.dropdown = true" @mouseleave="items.dropdown = false">
           <ul class="list-none text-center">
-            <li v-for="game in filteredResults" @click="select(game.file, game.root)"
-              class="p-2 hover:bg-gray-200 cursor-pointer">
+            <li v-for="game in filteredResults" :key="game.file" class="p-2 hover:bg-gray-200 cursor-pointer"
+              @click="select(game.file, game.root)">
               {{ game.name }}
             </li>
           </ul>
@@ -99,33 +105,46 @@ onMounted(fetchStuff)
   </div>
 
   <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 pt-10">
-    <div v-for="game in items.page" @click="select(game.file, game.root)"
-      class="flex flex-col items-center hover:cursor-pointer">
+    <div v-for="game in items.page" :key="game.root" class="flex flex-col items-center hover:cursor-pointer"
+      @click="select(game.file, game.root)">
       <div class="flex justify-center items-center w-44 h-44">
         <img class="rounded-3xl m-3 hover:cursor-pointer max-w-full max-h-full"
           :src="'/cdn/' + game.root + '/' + game.img">
       </div>
-      <h2 class="text-white text-center font-poppins text-lg">{{ game.name }}</h2>
+      <h2 class="text-white text-center font-poppins text-lg">
+        {{ game.name }}
+      </h2>
     </div>
   </div>
 
   <div class="flex justify-center items-center text-xl font-bold font-poppins text-white m-3">
-    <button @click="page(1)" class="m-1">
-      << </button>
-        <button v-if="items.pagenum == totalPages && items.pagenum - 2 > 0" @click="page(items.pagenum - 2)"
-          class="m-1 w-8">{{
-            items.pagenum - 2
-          }}</button>
-        <button v-if="items.pagenum - 1 > 0" @click="page(--items.pagenum)" class="m-0.5 w-8">{{
-          items.pagenum - 1
-        }}</button>
-        <button class="m-0.5 p-1 rounded-full bg-title-blue w-10">{{ items.pagenum }}</button>
-        <button v-if="items.pagenum != totalPages && totalPages != 0" @click="page(++items.pagenum)"
-          class="m-0.5 w-8">{{
-            items.pagenum + 1 }}</button>
-        <button v-if="items.pagenum - 1 <= 0 && totalPages > 2" @click="page(items.pagenum + 2)" class="m-0.5 w-8">{{
-          items.pagenum + 2 }}</button>
-        <button @click="page(totalPages)" class="m-1">>></button>
+    <button class="m-1" @click="page(1)">
+      &lt;&lt; </button>
+    <button v-if="items.pagenum == totalPages && items.pagenum - 2 > 0" class="m-1 w-8"
+      @click="page(items.pagenum - 2)">
+      {{
+        items.pagenum - 2
+      }}
+    </button>
+    <button v-if="items.pagenum - 1 > 0" class="m-0.5 w-8" @click="page(--items.pagenum)">
+      {{
+        items.pagenum - 1
+      }}
+    </button>
+    <button class="m-0.5 p-1 rounded-full bg-title-blue w-10">
+      {{ items.pagenum }}
+    </button>
+    <button v-if="items.pagenum != totalPages && totalPages != 0" class="m-0.5 w-8" @click="page(++items.pagenum)">
+      {{
+        items.pagenum + 1 }}
+    </button>
+    <button v-if="items.pagenum - 1 <= 0 && totalPages > 2" class="m-0.5 w-8" @click="page(items.pagenum + 2)">
+      {{
+        items.pagenum + 2 }}
+    </button>
+    <button class="m-1" @click="page(totalPages)">
+      >>
+    </button>
   </div>
 </template>
 

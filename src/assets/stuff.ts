@@ -1,8 +1,8 @@
 import { BareMuxConnection } from "@mercuryworkshop/bare-mux";
-import '/scramjet/scramjet.controller.js';
+import "/scramjet/scramjet.controller.js";
 
-let scramjet;
-let conn;
+let scramjet: ScramjetController;
+let conn: BareMuxConnection;
 try {
   conn = new BareMuxConnection("/baremux/worker.js");
 
@@ -40,12 +40,12 @@ if (!transport) {
   transport = "epoxy";
 }
 
-export async function setProxy(proxysel) {
+export async function setProxy(proxysel: string) {
   localStorage.setItem("proxy", proxysel);
   proxy = proxysel;
 }
 
-export async function setTransport(transportsel) {
+export async function setTransport(transportsel: string) {
   try {
     localStorage.setItem("transport", transportsel);
     transport = transportsel;
@@ -62,28 +62,28 @@ export async function setTransport(transportsel) {
 }
 setTransport(transport);
 
-export function search(input) {
-  let template = "https://www.google.com/search?q=%s";
+export function search(input: string) {
+  const template = "https://www.google.com/search?q=%s";
   try {
     // input is a valid URL:
     return new URL(input).toString();
-  } catch (err) {}
+  } catch {}
 
   try {
-    let url = new URL(`http://${input}`);
+    const url = new URL(`http://${input}`);
     if (url.hostname.includes(".")) return url.toString();
-  } catch (err) {}
+  } catch {}
 
   return template.replace("%s", encodeURIComponent(input));
 }
 
 export { proxy, scramjet };
 
-export function setFavicon(iconPath) {
-  let link = document.querySelector("link[rel~='icon']");
+export function setFavicon(iconPath: string) {
+  let link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
   if (!link) {
-    link = document.createElement('link');
-    link.rel = 'icon';
+    link = document.createElement("link");
+    link.rel = "icon";
     document.head.appendChild(link);
   }
   link.href = iconPath;

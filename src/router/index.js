@@ -5,35 +5,35 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      component: () => import("@/views/home.vue"),
+      component: () => import("@/views/HomePage.vue"),
     },
     {
       path: "/iframe",
-      component: () => import("@/views/iframe.vue"),
+      component: () => import("@/views/IframePage.vue"),
     },
     {
       path: "/search",
-      component: () => import("@/views/search.vue"),
+      component: () => import("@/views/SearchPage.vue"),
     },
     {
       path: "/games",
-      component: () => import("@/views/games.vue"),
+      component: () => import("@/views/GamesPage.vue"),
     },
     {
       path: "/apps",
-      component: () => import("@/views/apps.vue"),
+      component: () => import("@/views/AppsPage.vue"),
     },
     {
       path: "/settings",
-      component: () => import("@/views/settings.vue"),
+      component: () => import("@/views/SettingsPage.vue"),
     },
     {
       path: "/credits",
-      component: () => import("@/views/credits.vue"),
+      component: () => import("@/views/CreditsPage.vue"),
     },
     {
       path: "/ai",
-      component: () => import("@/views/ai/ai.vue"),
+      component: () => import("@/views/ai/AIPage.vue"),
     },
     {
       path: "/:404",
