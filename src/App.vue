@@ -13,6 +13,24 @@ try {
 
 const router = useRouter();
 
+function trackPageView (path, title) {
+  if (window.zaraz) {
+    window.zaraz.track("pageview", {
+      path: path,
+      title: title || document.title,
+      location: window.location.href
+    });
+  }
+};
+
+// Add navigation guard
+router.afterEach((to) => {
+  // Small delay to ensure page title is updated
+  setTimeout(() => {
+    trackPageView(to.path);
+  }, 100);
+});
+
 
 
 function titlestuff() {

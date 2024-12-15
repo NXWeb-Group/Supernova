@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-import iframe from "@/views/iframe.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,7 +9,7 @@ const router = createRouter({
     },
     {
       path: "/iframe",
-      component: iframe,
+      component: () => import("@/views/iframe.vue"),
     },
     {
       path: "/search",
