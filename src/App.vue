@@ -1,6 +1,6 @@
 <script setup>
 import axios from 'axios';
-import { onMounted, watch } from 'vue';
+import { onMounted, watch, nextTick } from 'vue';
 import { RouterLink, RouterView, useRouter } from 'vue-router';
 import { scramjet, setFavicon } from "@/assets/stuff"
 import { store } from '@/assets/store';
