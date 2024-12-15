@@ -21,7 +21,7 @@ function trackPageView(path, title) {
   }
 
   try {
-    window.zaraz.track("pageview", {
+    zaraz('pageview', {
       path: path,
       title: title || document.title,
       location: window.location.href,
@@ -51,12 +51,11 @@ async function logout() {
   }
 }
 
-onMounted( () => {
+onMounted(() => {
   titlestuff();
 });
 
-router.afterEach(async (to) => {
-  await nextTick();
+router.afterEach((to) => {
   trackPageView(to.path);
 });
 
