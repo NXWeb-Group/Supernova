@@ -13,25 +13,24 @@ try {
 
 const router = useRouter();
 
-function trackPageView (path, title) {
-  if (window.zaraz) {
+function trackPageView(path, title) {
+  // Ensure zaraz is loaded and ready
+  if (typeof window.zaraz === 'undefined') {
+    console.warn('Zaraz not initialized');
+    return;
+  }
+
+  try {
     window.zaraz.track("pageview", {
       path: path,
       title: title || document.title,
-      location: window.location.href
+      location: window.location.href,
+      timestamp: new Date().toISOString()
     });
+  } catch (e) {
+    console.error('Zaraz tracking failed:', e);
   }
-};
-
-// Add navigation guard
-router.afterEach((to) => {
-  // Small delay to ensure page title is updated
-  setTimeout(() => {
-    trackPageView(to.path);
-  }, 100);
-});
-
-
+}
 
 function titlestuff() {
   if (localStorage.getItem("icon") == null) {
@@ -54,6 +53,14 @@ async function logout() {
 
 onMounted(() => {
   titlestuff();
+  trackPageView(router.currentRoute.value.path);
+});
+
+router.afterEach((to) => {
+  // Wait for title update in next tick
+  nextTick(() => {
+    trackPageView(to.path);
+  });
 });
 
 watch(router.currentRoute, () => {
