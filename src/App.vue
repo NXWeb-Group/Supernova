@@ -51,16 +51,13 @@ async function logout() {
   }
 }
 
-onMounted(() => {
+onMounted( () => {
   titlestuff();
-  trackPageView(router.currentRoute.value.path);
 });
 
-router.afterEach((to) => {
-  // Wait for title update in next tick
-  nextTick(() => {
-    trackPageView(to.path);
-  });
+router.afterEach(async (to) => {
+  await nextTick();
+  trackPageView(to.path);
 });
 
 watch(router.currentRoute, () => {
