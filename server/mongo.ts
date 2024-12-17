@@ -1,7 +1,8 @@
 import { MongoClient } from "mongodb";
+import type { Collection } from "mongodb";
 import MongoStore from "connect-mongo";
 
-async function start(client) {
+async function start(client: MongoClient) {
   try {
     await client.connect();
     console.log("Connected to MongoDB");
@@ -10,9 +11,9 @@ async function start(client) {
   }
 }
 
-let client = null;
-let account;
-let mongoStore;
+let client: MongoClient;
+let account: Collection;
+let mongoStore: MongoStore;
 //database
 if (process.env.AI === "true") {
   if (process.argv[2] == "Docker") {

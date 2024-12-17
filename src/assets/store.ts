@@ -2,9 +2,10 @@ import { reactive } from "vue";
 import axios from "axios";
 
 export const store = reactive({
+  config: { ai: false, forum: false },
   iframe: undefined as string | undefined,
   navbar: true,
-  config: { ai: false, forum: false },
+  isLoading: false,
   username: undefined as string | undefined,
   tokens: 0,
   activeroomid: undefined as string | undefined,

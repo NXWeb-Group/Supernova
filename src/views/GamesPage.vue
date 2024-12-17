@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import axios from 'axios';
-import { reactive, onMounted, computed } from 'vue'
-import { useRouter, useRoute } from 'vue-router';
-import { store } from '@/assets/store';
+import axios from "axios";
+import { reactive, onMounted, computed } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { store } from "@/assets/store";
 
 const router = useRouter();
 const route = useRoute();
@@ -25,22 +25,25 @@ const items = reactive({
 });
 
 async function fetchStuff() {
-  const response = await axios.get('/cdn/games.json')
-  items.all = response.data.sort((a: { name: string }, b: { name: string }) => a.name.localeCompare(b.name));
+  const response = await axios.get("/cdn/games.json");
+  items.all = response.data.sort((a: { name: string }, b: { name: string }) =>
+    a.name.localeCompare(b.name)
+  );
   items.itemsperpage = 20;
   const param = route.query;
   if (param.search) {
     items.search = param.search as string;
   }
-  if (param.page && typeof param.page === 'string' && parseInt(param.page)) {
+  if (param.page && typeof param.page === "string" && parseInt(param.page)) {
     page(parseInt(param.page));
   } else page(1);
 }
 
 const totalPages = computed(() => {
-  if (route.query.search) return Math.ceil(filteredResults.value.length / items.itemsperpage);
+  if (route.query.search)
+    return Math.ceil(filteredResults.value.length / items.itemsperpage);
   return Math.ceil(items.all.length / items.itemsperpage);
-})
+});
 
 function page(num: number) {
   if (num > totalPages.value) num = totalPages.value;
@@ -48,20 +51,28 @@ function page(num: number) {
   items.pagenum = num;
   if (!items.search) {
     router.push({
-      query: { page: num }
+      query: { page: num },
     });
-    items.page = items.all.slice((num - 1) * items.itemsperpage, num * items.itemsperpage);
+    items.page = items.all.slice(
+      (num - 1) * items.itemsperpage,
+      num * items.itemsperpage
+    );
   } else {
     router.push({
-      query: { page: num, search: items.search }
+      query: { page: num, search: items.search },
     });
-    items.page = filteredResults.value.slice((num - 1) * items.itemsperpage, num * items.itemsperpage);
+    items.page = filteredResults.value.slice(
+      (num - 1) * items.itemsperpage,
+      num * items.itemsperpage
+    );
   }
 }
 
 const filteredResults = computed(() => {
   if (!items.search) return [];
-  return items.all.filter(game => game.name.toLowerCase().includes(items.search.toLowerCase()));
+  return items.all.filter((game) =>
+    game.name.toLowerCase().includes(items.search.toLowerCase())
+  );
 });
 
 const dropdown = computed(() => {
@@ -69,26 +80,27 @@ const dropdown = computed(() => {
 });
 
 function select(file: string, root: string) {
-  const path = "./cdn/" + root + "/" + file
+  const path = "./cdn/" + root + "/" + file;
   if (root === "webretro") {
-    store.iframe = '/cdn/webretro/index.html?core=autodetect&rom=' + file
-  }
-  else {
+    store.iframe = "/cdn/webretro/index.html?core=autodetect&rom=" + file;
+  } else {
     store.iframe = path;
   }
-  router.push({ path: '/iframe' });
+  router.push({ path: "/iframe" });
 }
 
-onMounted(fetchStuff)
-
+onMounted(fetchStuff);
 </script>
 
 <template>
   <div class="flex justify-center m-6">
     <div class="relative w-96 sm:w-textw">
       <input v-model="items.search" class="w-full rounded-3xl outline-none transition-all h-12 text-center text-2xl"
-        :class="{ 'rounded-t-md rounded-b-none': dropdown, 'focus:rounded-md': !dropdown }" placeholder="Search Games"
-        type="text" @keyup.enter="page(0)" @focus="items.inputFocused = true" @blur="items.inputFocused = false">
+        :class="{
+          'rounded-t-md rounded-b-none': dropdown,
+          'focus:rounded-md': !dropdown,
+        }" placeholder="Search Games" type="text" @keyup.enter="page(0)" @focus="items.inputFocused = true"
+        @blur="items.inputFocused = false" />
       <Transition name="slide">
         <div v-if="dropdown"
           class="absolute top-full left-0 w-full bg-white rounded-b-lg z-10 max-h-96 overflow-x-clip overflow-y-scroll shadow-lg"
@@ -109,7 +121,7 @@ onMounted(fetchStuff)
       @click="select(game.file, game.root)">
       <div class="flex justify-center items-center w-44 h-44">
         <img class="rounded-3xl m-3 hover:cursor-pointer max-w-full max-h-full"
-          :src="'/cdn/' + game.root + '/' + game.img">
+          :src="'/cdn/' + game.root + '/' + game.img" />
       </div>
       <h2 class="text-white text-center font-poppins text-lg">
         {{ game.name }}
@@ -118,33 +130,24 @@ onMounted(fetchStuff)
   </div>
 
   <div class="flex justify-center items-center text-xl font-bold font-poppins text-white m-3">
-    <button class="m-1" @click="page(1)">
-      &lt;&lt; </button>
+    <button class="m-1" @click="page(1)">&lt;&lt;</button>
     <button v-if="items.pagenum == totalPages && items.pagenum - 2 > 0" class="m-1 w-8"
       @click="page(items.pagenum - 2)">
-      {{
-        items.pagenum - 2
-      }}
+      {{ items.pagenum - 2 }}
     </button>
     <button v-if="items.pagenum - 1 > 0" class="m-0.5 w-8" @click="page(--items.pagenum)">
-      {{
-        items.pagenum - 1
-      }}
+      {{ items.pagenum - 1 }}
     </button>
     <button class="m-0.5 p-1 rounded-full bg-title-blue w-10">
       {{ items.pagenum }}
     </button>
     <button v-if="items.pagenum != totalPages && totalPages != 0" class="m-0.5 w-8" @click="page(++items.pagenum)">
-      {{
-        items.pagenum + 1 }}
+      {{ items.pagenum + 1 }}
     </button>
     <button v-if="items.pagenum - 1 <= 0 && totalPages > 2" class="m-0.5 w-8" @click="page(items.pagenum + 2)">
-      {{
-        items.pagenum + 2 }}
+      {{ items.pagenum + 2 }}
     </button>
-    <button class="m-1" @click="page(totalPages)">
-      >>
-    </button>
+    <button class="m-1" @click="page(totalPages)">>></button>
   </div>
 </template>
 

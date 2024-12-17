@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import axios from 'axios';
-import { onMounted, watch } from 'vue';
-import { RouterLink, RouterView, useRouter } from 'vue-router';
+import axios from "axios";
+import { onMounted, watch } from "vue";
+import { RouterLink, RouterView, useRouter } from "vue-router";
 import { scramjet, setFavicon } from "@/assets/stuff";
-import { store } from '@/assets/store';
+import { store } from "@/assets/store";
+
+import LoadingScreen from "@/components/LoadingScreen.vue";
 
 function startSW() {
   try {
@@ -17,8 +19,8 @@ const router = useRouter();
 
 function trackZaraz(event: string, path: string, title: string | undefined) {
   // Ensure zaraz is loaded and ready
-  if (typeof window.zaraz === 'undefined') {
-    console.warn('Zaraz not initialized');
+  if (typeof window.zaraz === "undefined") {
+    console.warn("Zaraz not initialized");
     return;
   }
 
@@ -28,19 +30,19 @@ function trackZaraz(event: string, path: string, title: string | undefined) {
       title: title || document.title,
     });
   } catch (e) {
-    console.error('Zaraz tracking failed:', e);
+    console.error("Zaraz tracking failed:", e);
   }
 }
 
 function titlestuff() {
   const title = localStorage.getItem("title") || "Google";
   const icon = localStorage.getItem("icon") || "/pics/favicon/google.png";
-  document.title = title
+  document.title = title;
   setFavicon(icon);
 }
 
 async function logout() {
-  const response = await axios.post('/api/logout')
+  const response = await axios.post("/api/logout");
   if (response.data === "done") {
     store.username = undefined;
     store.tokens = 0;
@@ -60,7 +62,6 @@ router.afterEach((to) => {
 watch(router.currentRoute, () => {
   store.navbar = true;
 });
-
 </script>
 
 <template>
@@ -92,8 +93,7 @@ watch(router.currentRoute, () => {
             Tokens: {{ store.tokens }}
           </p>
           <p class="font-poppins text-3xl text-white no-underline">
-            {{
-              store.username }}
+            {{ store.username }}
           </p>
           <button v-if="store.username" class="text-black bg-blue-700 font-poppins rounded-xl w-36 h-12"
             @click="logout()">
@@ -101,10 +101,11 @@ watch(router.currentRoute, () => {
           </button>
         </div>
         <RouterLink to="/settings">
-          <img class="size-14 cursor-pointer" alt="settings" src="./assets/pics/settings.webp">
+          <img class="size-14 cursor-pointer" alt="settings" src="./assets/pics/settings.webp" />
         </RouterLink>
       </div>
     </div>
   </nav>
-  <RouterView />
+  <LoadingScreen v-if="store.isLoading" />
+  <RouterView v-if="!store.isLoading" />
 </template>

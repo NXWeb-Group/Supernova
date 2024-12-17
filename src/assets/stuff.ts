@@ -67,12 +67,16 @@ export function search(input: string) {
   try {
     // input is a valid URL:
     return new URL(input).toString();
-  } catch {}
+  } catch {
+    // Ignore invalid URL
+  }
 
   try {
     const url = new URL(`http://${input}`);
     if (url.hostname.includes(".")) return url.toString();
-  } catch {}
+  } catch {
+    // Ignore invalid URL
+  }
 
   return template.replace("%s", encodeURIComponent(input));
 }

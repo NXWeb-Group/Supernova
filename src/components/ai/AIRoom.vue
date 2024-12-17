@@ -44,7 +44,7 @@ async function rename() {
     <p v-if="edit === false" class="text-xl text-gray-100">
       {{ roomname || "Unnamed Room" }}
     </p>
-    <span v-if="id !== null" class="material-symbols-outlined" @click="editName">
+    <span v-if="id !== undefined" class="material-symbols-outlined" @click="editName">
       edit
     </span>
   </div>

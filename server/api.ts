@@ -4,7 +4,7 @@ import { ask, getChats } from "./ai.js";
 
 const router = express.Router();
 
-router.get("/config", (req, res) => {
+router.get("/config", (req, res, next) => {
   try {
     res.send(true);
   } catch (error) {
@@ -14,7 +14,9 @@ router.get("/config", (req, res) => {
 
 router.get("/user", async (req, res, next) => {
   try {
-    await getuserinfo(req, res);
+    if (req.session.valid) {
+      await getuserinfo(req, res);
+    } else res.send({ username: null, tokens: 0, rooms: null });
   } catch (error) {
     next(error);
   }
@@ -38,7 +40,12 @@ router.post("/signup", async (req, res, next) => {
 
 router.post("/logout", (req, res, next) => {
   try {
-    req.session.destroy();
+    req.session.destroy((err) => {
+      if (err) {
+        return next(err);
+      }
+      res.send("done");
+    });
     res.send("done");
   } catch (error) {
     next(error);
@@ -79,8 +86,8 @@ router.use((req, res) => {
   res.status(404).send({ status: "error", message: "Not Found" });
 });
 
-router.use((error, req, res, next) => {
-  console.warn(error);
+router.use((error: unknown, req: express.Request, res: express.Response) => {
+  console.error(error);
   res.status(500).send({ status: "error", message: "Internal Server Error" });
 });
 

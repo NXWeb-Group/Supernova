@@ -3,10 +3,11 @@ import { reactive, computed, onMounted } from 'vue';
 import axios from 'axios';
 import { dotSpinner } from 'ldrs'
 import { encodingForModel } from 'js-tiktoken';
-import account from '@/views/ai/components/AccountAccess.vue'
-import chat from '@/views/ai/components/AIChat.vue'
-import room from '@/views/ai/components/AIRoom.vue'
 import { store } from '@/assets/store';
+
+import account from '@/components/ai/AccountAccess.vue'
+import chat from '@/components/ai/AIChat.vue'
+import room from '@/components/ai/AIRoom.vue'
 
 dotSpinner.register()
 
@@ -14,7 +15,7 @@ const enc = encodingForModel("gpt-4o-mini");
 const stuff = reactive({
   text: '',
   error: '',
-  isSending: false,
+  isSending: false as string | boolean,
   rooms: [] as { roomid: string; name: string }[],
   chats: [] as { ai: boolean; text: string }[],
 });
@@ -41,16 +42,15 @@ function addmessage(ai: boolean, text: string) {
 
 async function send() {
   if (!stuff.isSending) {
-    stuff.isSending = true;
-    stuff.text = "";
     try {
-      addmessage(false, stuff.text);
+      stuff.isSending = stuff.text;
+      stuff.text = "";
+      addmessage(false, stuff.isSending);
       const response = await axios.post('/api/ask', {
         text: stuff.isSending,
         roomid: store.activeroomid
       })
 
-      console.log(response.data)
       if (response.data !== "invalid-session") {
         if (!response.data.error) {
           if (response.data.roomid) {
@@ -76,7 +76,7 @@ async function send() {
 async function enter(event: KeyboardEvent) {
   if (!event.shiftKey) {
     event.preventDefault();
-    if (stuff.text.trim()) {
+    if (stuff.text && stuff.text.trim()) {
       if (store.tokens >= Tokens.value) {
         await send();
       } else stuff.error = "Not Enough Tokens"

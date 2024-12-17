@@ -4,26 +4,17 @@
   </h1>
   <div class="m-2">
     <p class="text-white text-xl">
-      Supernova uses <a
-        class="text-blue-600"
-        href="https://github.com/titaniumnetwork-dev/Ultraviolet"
-      >Ultraviolet</a> by Titanium Network and <a
-        class="text-blue-600"
-        href="https://github.com/MercuryWorkshop/scramjet"
-      >Scramjet</a> by Mercury
+      Supernova uses <a class="text-blue-600" href="https://github.com/titaniumnetwork-dev/Ultraviolet">Ultraviolet</a>
+      by Titanium Network and <a class="text-blue-600" href="https://github.com/MercuryWorkshop/scramjet">Scramjet</a>
+      by Mercury
       Workshop
     </p>
     <p class="text-white text-xl">
-      The backgroud image is from: <a
-        class="text-blue-600"
-        href="https://www.hippopx.com/"
-      >hippopx</a>
+      The backgroud image is from: <a class="text-blue-600" href="https://www.hippopx.com/">hippopx</a>
     </p>
     <p class="text-white text-xl">
-      The emulator is <a
-        class="text-blue-600"
-        href="https://github.com/BinBashBanana/webretro"
-      >WebRetro</a> by BinBashBannana
+      The emulator is <a class="text-blue-600" href="https://github.com/BinBashBanana/webretro">WebRetro</a> by
+      BinBashBannana
     </p>
   </div>
 </template>
