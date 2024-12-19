@@ -52,7 +52,6 @@ router.beforeEach((to, from, next) => {
 });
 
 router.afterEach((to) => {
-  console.log(to.path);
   if (to.path !== "/iframe") {
     store.isLoading = false;
   }

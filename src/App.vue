@@ -52,7 +52,7 @@ async function logout() {
 onMounted(() => {
   startSW();
   titlestuff();
-  trackZaraz("first", router.currentRoute.value.path, undefined);
+  // trackZaraz("Initial Load", router.currentRoute.value.path, undefined);
 });
 
 router.afterEach((to) => {
