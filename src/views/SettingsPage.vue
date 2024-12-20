@@ -50,10 +50,10 @@ function changeTransport() {
   <div class="flex flex-col justify-center items-center">
     <h1 class="text-white text-5xl font-semibold p-10">Icon Select</h1>
     <div class="flex justify-center space-x-5">
-      <img class="w-60 h-60" src="/pics/favicon/classroom.jpg" @click="stuff2('/pics/favicon/classroom.jpg')" />
-      <img class="w-60 h-60" src="/pics/favicon/drive.png" @click="stuff2('/pics/favicon/drive.png')" />
-      <img class="w-60 h-60" src="/pics/favicon/gmail.png" @click="stuff2('/pics/favicon/gmail.png')" />
-      <img class="w-60 h-60" src="/pics/favicon/google.png" @click="stuff2('/pics/favicon/google.png')" />
+      <img class="w-60 h-60" src="@/assets/pics/classroom.webp" @click="stuff2('/pics/favicon/classroom.png')" />
+      <img class="w-60 h-60" src="@/assets/pics/drive.webp" @click="stuff2('/pics/favicon/drive.png')" />
+      <img class="w-60 h-60" src="@/assets/pics/gmail.webp" @click="stuff2('/pics/favicon/gmail.ico')" />
+      <img class="w-60 h-60" src="@/assets/pics/google.webp" @click="stuff2('/pics/favicon/google.ico')" />
     </div>
   </div>
   <div class="flex flex-col justify-center items-center">

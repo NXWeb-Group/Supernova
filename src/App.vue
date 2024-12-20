@@ -36,7 +36,7 @@ function trackZaraz(event: string, path: string, title: string | undefined) {
 
 function titlestuff() {
   const title = localStorage.getItem("title") || "Google";
-  const icon = localStorage.getItem("icon") || "/pics/favicon/google.png";
+  const icon = localStorage.getItem("icon") || "/pics/favicon/google.ico";
   document.title = title;
   setFavicon(icon);
 }
