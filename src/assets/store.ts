@@ -1,5 +1,4 @@
 import { reactive } from "vue";
-import axios from "axios";
 
 export const store = reactive({
   config: { ai: false, forum: false },
@@ -13,17 +12,19 @@ export const store = reactive({
 
 async function initializeStore() {
   try {
-    const forum = await axios.get("/api/forum");
+    const forumResponse = await fetch("/api/forum");
+    const forumData = await forumResponse.json();
     store.config.forum =
-      typeof forum.data === "boolean" ? forum.data : forum.data === "true";
+      typeof forumData === "boolean" ? forumData : forumData === "true";
   } catch {
     console.warn("no forum");
   }
 
   try {
-    const config = await axios.get("/api/config");
+    const configResponse = await fetch("/api/config");
+    const configData = await configResponse.json();
     store.config.ai =
-      typeof config.data === "boolean" ? config.data : config.data === "true";
+      typeof configData === "boolean" ? configData : configData === "true";
   } catch {
     console.warn("no ai");
   }

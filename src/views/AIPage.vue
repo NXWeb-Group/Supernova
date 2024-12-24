@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { reactive, computed, onMounted } from 'vue';
-import axios from 'axios';
 import { dotSpinner } from 'ldrs'
 import { encodingForModel } from 'js-tiktoken';
 import { store } from '@/assets/store';
@@ -26,10 +25,15 @@ const Tokens = computed(() => {
 });
 
 async function getuser() {
-  const response = await axios.get("/api/user");
-  store.username = response.data.username;
-  store.tokens = response.data.tokens;
-  stuff.rooms = response.data.rooms;
+  try {
+    const response = await fetch("/api/user");
+    const data = await response.json();
+    store.username = data.username;
+    store.tokens = data.tokens;
+    stuff.rooms = data.rooms;
+  } catch (error) {
+    console.error('Failed to get user:', error);
+  }
 }
 
 onMounted(async () => {
@@ -46,21 +50,28 @@ async function send() {
       stuff.isSending = stuff.text;
       stuff.text = "";
       addmessage(false, stuff.isSending);
-      const response = await axios.post('/api/ask', {
-        text: stuff.isSending,
-        roomid: store.activeroomid
-      })
+      const response = await fetch('/api/ask', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          text: stuff.isSending,
+          roomid: store.activeroomid
+        })
+      });
+      const data = await response.json();
 
-      if (response.data !== "invalid-session") {
-        if (!response.data.error) {
-          if (response.data.roomid) {
-            stuff.rooms.push({ roomid: response.data.roomid, name: "Unnamed Room" })
-            store.activeroomid = response.data.roomid
+      if (data !== "invalid-session") {
+        if (!data.error) {
+          if (data.roomid) {
+            stuff.rooms.push({ roomid: data.roomid, name: "Unnamed Room" })
+            store.activeroomid = data.roomid
           }
-          addmessage(true, response.data.message);
-          store.tokens = response.data.remainingTokens
+          addmessage(true, data.message);
+          store.tokens = data.remainingTokens
           stuff.error = ""
-        } else stuff.error = response.data.error
+        } else stuff.error = data.error
       } else {
         store.username = undefined;
         store.tokens = 0;
@@ -86,20 +97,30 @@ async function enter(event: KeyboardEvent) {
 
 async function getChats() {
   if (store.activeroomid) {
-    const response = await axios.post('/api/getChats', {
-      roomid: store.activeroomid,
-    })
-    console.log(response.data)
-    if (response.data !== "invalid-session") {
-      stuff.chats = [];
-      for (const chat of response.data.chats) {
-        addmessage(chat.ai, chat.text);
-      }
-    } else {
-      store.username = undefined;
-      store.tokens = 0;
-    }
+    try {
+      const response = await fetch('/api/getChats', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          roomid: store.activeroomid,
+        })
+      });
+      const data = await response.json();
 
+      if (data !== "invalid-session") {
+        stuff.chats = [];
+        for (const chat of data.chats) {
+          addmessage(chat.ai, chat.text);
+        }
+      } else {
+        store.username = undefined;
+        store.tokens = 0;
+      }
+    } catch (error) {
+      console.warn(error);
+    }
   } else stuff.chats = [];
 }
 </script>

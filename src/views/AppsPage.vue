@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import axios from 'axios';
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router';
 import { store } from '@/assets/store';
@@ -17,8 +16,12 @@ interface App {
 const items = ref<App[]>([]);
 
 async function fetchStuff() {
-  const response = await axios.get('/cdn/apps.json')
-  items.value = response.data
+  try {
+    const response = await fetch('/cdn/apps.json');
+    items.value = await response.json();
+  } catch (error) {
+    console.error('Failed to fetch apps:', error);
+  }
 }
 
 function go(url: string, type: string) {

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import axios from "axios";
 import { onMounted, watch } from "vue";
 import { RouterLink, RouterView, useRouter } from "vue-router";
 import { scramjet, setFavicon } from "@/assets/stuff";
@@ -42,10 +41,17 @@ function titlestuff() {
 }
 
 async function logout() {
-  const response = await axios.post("/api/logout");
-  if (response.data === "done") {
-    store.username = undefined;
-    store.tokens = 0;
+  try {
+    const response = await fetch("/api/logout", {
+      method: 'POST',
+    });
+    const data = await response.text();
+    if (data === "done") {
+      store.username = undefined;
+      store.tokens = 0;
+    }
+  } catch (error) {
+    console.error('Logout failed:', error);
   }
 }
 

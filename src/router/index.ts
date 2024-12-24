@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { store } from "@/assets/store";
-import Iframe from "@/views/IframePage.vue"
+import Iframe from "@/views/IframePage.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,6 +36,13 @@ const router = createRouter({
     {
       path: "/ai",
       component: () => import("@/views/AIPage.vue"),
+      beforeEnter: (to, from, next) => {
+        if (!store.config.ai) {
+          next("/");
+        } else {
+          next();
+        }
+      },
     },
     {
       path: "/:404",

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import axios from "axios";
 import { reactive, onMounted, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { store } from "@/assets/store";
@@ -25,18 +24,23 @@ const items = reactive({
 });
 
 async function fetchStuff() {
-  const response = await axios.get("/cdn/games.json");
-  items.all = response.data.sort((a: { name: string }, b: { name: string }) =>
-    a.name.localeCompare(b.name)
-  );
-  items.itemsperpage = 20;
-  const param = route.query;
-  if (param.search) {
-    items.search = param.search as string;
+  try {
+    const response = await fetch("/cdn/games.json");
+    const data = await response.json();
+    items.all = data.sort((a: { name: string }, b: { name: string }) =>
+      a.name.localeCompare(b.name)
+    );
+    items.itemsperpage = 20;
+    const param = route.query;
+    if (param.search) {
+      items.search = param.search as string;
+    }
+    if (param.page && typeof param.page === "string" && parseInt(param.page)) {
+      page(parseInt(param.page));
+    } else page(1);
+  } catch (error) {
+    console.error('Failed to fetch games:', error);
   }
-  if (param.page && typeof param.page === "string" && parseInt(param.page)) {
-    page(parseInt(param.page));
-  } else page(1);
 }
 
 const totalPages = computed(() => {

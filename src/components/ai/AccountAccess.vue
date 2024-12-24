@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import axios from 'axios';
 import { store } from '@/assets/store';
 
 const stuff = reactive({
@@ -9,7 +8,7 @@ const stuff = reactive({
   password: '',
   header: 'Login',
   button: 'Sign Up',
-  respond: null
+  respond: null as string | null,
 });
 
 let select = "login"
@@ -23,16 +22,30 @@ function toggle(idk: string) {
 }
 
 async function post() {
-  const response = await axios.post(`/api/${select}`, {
-    email: stuff.email,
-    username: stuff.username,
-    password: stuff.password
-  })
-  if (response.data.status === "successful") {
-    store.username = response.data.username
-    store.tokens = response.data.tokens || 0
-  } else stuff.respond = response.data.message
-};
+  try {
+    const response = await fetch(`/api/${select}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: stuff.email,
+        username: stuff.username,
+        password: stuff.password
+      })
+    });
+    const data = await response.json();
+    if (data.status === "successful") {
+      store.username = data.username;
+      store.tokens = data.tokens || 0;
+    } else {
+      stuff.respond = data.message;
+    }
+  } catch (error) {
+    stuff.respond = "Network error occurred";
+    console.error('Login/Signup failed:', error);
+  }
+}
 </script>
 
 <template>

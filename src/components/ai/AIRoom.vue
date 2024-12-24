@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import axios from 'axios';
 import { store } from '@/assets/store';
 
 const props = defineProps({
@@ -23,14 +22,25 @@ function editName(event: MouseEvent) {
 }
 
 async function rename() {
-  edit.value = false
-  const response = await axios.post('/api/renameRoom', {
-    roomid: props.id,
-    roomname: roomname.value,
-  })
-  if (response.data === "invalid-session") {
-    store.username = undefined;
-    store.tokens = 0;
+  edit.value = false;
+  try {
+    const response = await fetch('/api/renameRoom', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        roomid: props.id,
+        roomname: roomname.value,
+      })
+    });
+    const data = await response.json();
+    if (data === "invalid-session") {
+      store.username = undefined;
+      store.tokens = 0;
+    }
+  } catch (error) {
+    console.error('Failed to rename room:', error);
   }
 }
 </script>
